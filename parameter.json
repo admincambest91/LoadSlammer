@@ -1,0 +1,77 @@
+{
+  "DC_load": {
+    "description": "Tests the DC load characteristics of the device.",
+    "parameters": {
+      "static_current_amps": [0.0, 0.5, 1.0, 2.0, 3.0, 4.0, 5.0],
+      "voltage_range_volts": [0.8, 1.2, 1.8],
+      "load_duration_seconds": 10,
+      "settling_time_ms": 100
+    },
+    "expected_results": {
+      "voltage_tolerance_percent": 5,
+      "current_accuracy_percent": 2
+    }
+  },
+  "Transient": {
+    "description": "Evaluates the device's response to sudden load changes.",
+    "parameters": {
+      "initial_current_amps": 0.1,
+      "final_current_amps": 5.0,
+      "slew_rate_amps_us": 100,
+      "number_of_cycles": 5,
+      "transient_duration_us": 500,
+      "load_step_direction": ["rise", "fall", "both"]
+    },
+    "expected_results": {
+      "overshoot_mv": 50,
+      "undershoot_mv": 50,
+      "recovery_time_us": 100
+    }
+  },
+  "Pulse_Train": {
+    "description": "Tests the device's stability under a repetitive pulse load.",
+    "parameters": {
+      "base_current_amps": 0.5,
+      "pulse_current_amps": 3.0,
+      "pulse_width_us": 10,
+      "pulse_frequency_khz": 100,
+      "number_of_pulses": 1000,
+      "rise_time_ns": 5,
+      "fall_time_ns": 5
+    },
+    "expected_results": {
+      "voltage_ripple_mv": 20,
+      "current_distortion_percent": 1
+    }
+  },
+  "Impedance": {
+    "description": "Measures the output impedance of the device across a frequency range.",
+    "parameters": {
+      "test_frequency_range_hz": [10, 1000000],
+      "measurement_points": 50,
+      "ac_superimposed_current_ma": 50,
+      "dc_bias_current_amps": 2.0
+    },
+    "expected_results": {
+      "max_impedance_ohm": 0.1,
+      "min_impedance_ohm": 0.005,
+      "resonant_frequency_hz": "N/A"
+    }
+  },
+  "Delay": {
+    "description": "Measures various timing delays related to load application/removal or power sequencing.",
+    "parameters": {
+      "trigger_source": "digital_input_1",
+      "event_to_measure": "load_application_start",
+      "target_value_percent": 90,
+      "sampling_rate_hz": 100000
+    },
+    "expected_results": {
+      "measured_delay_us": {
+        "min": 10,
+        "max": 50
+      },
+      "tolerance_us": 5
+    }
+  }
+}
