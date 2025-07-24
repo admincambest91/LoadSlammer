@@ -1,0 +1,44 @@
+{
+  "VDDCR_CPU0": {
+    "VOTF Test": {
+      "Test Case": {
+        "1": { "PSI_Mode": 7, "IDD_Set (A)": 0.01,   "Old_VID (mV)": 550,  "Target_VID (mV)": 900  },
+        "2": { "PSI_Mode": 7, "IDD_Set (A)": 0.01,   "Old_VID (mV)": 900,  "Target_VID (mV)": 1300 },
+        "3": { "PSI_Mode": 7, "IDD_Set (A)": 0.01,   "Old_VID (mV)": 900,  "Target_VID (mV)": 1500 },
+        "4": { "PSI_Mode": 7, "IDD_Set (A)": 87.5,"Old_VID (mV)": 550,  "Target_VID (mV)": 900  },
+        "5": { "PSI_Mode": 7, "IDD_Set (A)": 87.5,"Old_VID (mV)": 900,  "Target_VID (mV)": 1300 },
+        "6": { "PSI_Mode": 7, "IDD_Set (A)": 87.5,"Old_VID (mV)": 900,  "Target_VID (mV)": 1500 },
+        "7": { "PSI_Mode": 7, "IDD_Set (A)": 175, "Old_VID (mV)": 550,  "Target_VID (mV)": 900  },
+        "8": { "PSI_Mode": 7, "IDD_Set (A)": 175, "Old_VID (mV)": 900,  "Target_VID (mV)": 1300 },
+        "9": { "PSI_Mode": 7, "IDD_Set (A)": 175, "Old_VID (mV)": 900,  "Target_VID (mV)": 1500 }
+      }
+    },
+    "SPEC calibration": {
+      "VID voltage": {
+        "550":  { "IDD test current (A)": [0.01, 87.5, 175] },
+        "900":  { "IDD test current (A)": [0.01, 87.5, 175] },
+        "1300": { "IDD test current (A)": [0.01, 87.5, 175] },
+        "1500": { "IDD test current (A)": [0.01, 87.5, 175] }
+      }
+    }
+  },
+  "VDDCR_SOC": {
+    "VOTF Test": {
+      "Test Case": {
+        "1": { "PSI_Mode": 7, "IDD_Set (A)": 0.01,   "Old_VID (mV)": 750,  "Target_VID (mV)": 900  },
+        "2": { "PSI_Mode": 7, "IDD_Set (A)": 0.01,   "Old_VID (mV)": 900,  "Target_VID (mV)": 1200 },
+        "3": { "PSI_Mode": 7, "IDD_Set (A)": 0.01,   "Old_VID (mV)": 750,  "Target_VID (mV)": 1200 },
+        "4": { "PSI_Mode": 7, "IDD_Set (A)": 87.5,"Old_VID (mV)": 750,  "Target_VID (mV)": 900  },
+        "5": { "PSI_Mode": 7, "IDD_Set (A)": 87.5,"Old_VID (mV)": 900,  "Target_VID (mV)": 1200 },
+        "6": { "PSI_Mode": 7, "IDD_Set (A)": 87.5,"Old_VID (mV)": 750,  "Target_VID (mV)": 1200 }
+      }
+    },
+    "SPEC calibration": {
+      "VID voltage": {
+        "750":  { "IDD test current (A)": [0.01, 105] },
+        "900":  { "IDD test current (A)": [0.01, 105] },
+        "1200": { "IDD test current (A)": [0.01, 105] }
+      }
+    }
+  }
+}
