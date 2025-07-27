@@ -11,6 +11,8 @@ import json
 import LS_main_control_window
 import SVI3_main_control_window
 import VISA_MSO46B
+import dialog_box_main_control_window
+import dialog_box_main_control_window_no_scope
 
 def initialize(
     test_key,
@@ -53,25 +55,30 @@ def initialize(
 
     #hardware= LoadSlammerController(backend="uia", timeout=20)
     
-    return  load_default_equipment(),parameters,workbook,worksheet,SVI3_location,test_key
+    return  load_default_equipment(test_key),parameters,workbook,worksheet,SVI3_location,test_key
 
 
 def load_ivi_components():
     pass
 
-def load_default_equipment():
+def load_default_equipment(test_key):
     equipment = {}
     # Running stand alone
     try:
         equipment["LoadSlammer"] = LS_main_control_window.LoadSlammerController()
         equipment["SVI3"]=SVI3_main_control_window.SVI3Controller()
-        mgr = VISA_MSO46B.InstrumentManager()
-        inst = mgr.discover()               # inst is a pyvisa resource with .write()/.query()
-        if inst is None:
-            raise RuntimeError("No MSO46B found on any VISA resource")
-        equipment["MSO46B"] = VISA_MSO46B.TektronixMSO46B(inst)       # ← now you’re passing the real instrument
+        # mgr = VISA_MSO46B.InstrumentManager()
+        # inst = mgr.discover()               # inst is a pyvisa resource with .write()/.query()
+        # if inst is None:
+        #     raise RuntimeError("No MSO46B found on any VISA resource")
+        equipment["MSO46B"] = 1#VISA_MSO46B.TektronixMSO46B(inst)       # ← now you’re passing the real instrument
         
-        
+        #will use this function later
+        #equipment["GUI"] = dialog_box_main_control_window.ScopePromptUI(equipment["SVI3"],equipment["MSO46B"],test_key)
+        equipment["GUI"] = dialog_box_main_control_window_no_scope.ScopePromptUI(equipment["SVI3"],test_key)
+
+
+
     except Exception as e:
         prompt(
             "Failed to initialized LoadSlammer and SVI3 Apps ",

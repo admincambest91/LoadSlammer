@@ -28,9 +28,9 @@
         "1": { "PSI_Mode": 7, "IDD_Set (A)": 0.01,   "Old_VID (mV)": 750,  "Target_VID (mV)": 900  },
         "2": { "PSI_Mode": 7, "IDD_Set (A)": 0.01,   "Old_VID (mV)": 900,  "Target_VID (mV)": 1200 },
         "3": { "PSI_Mode": 7, "IDD_Set (A)": 0.01,   "Old_VID (mV)": 750,  "Target_VID (mV)": 1200 },
-        "4": { "PSI_Mode": 7, "IDD_Set (A)": 87.5,"Old_VID (mV)": 750,  "Target_VID (mV)": 900  },
-        "5": { "PSI_Mode": 7, "IDD_Set (A)": 87.5,"Old_VID (mV)": 900,  "Target_VID (mV)": 1200 },
-        "6": { "PSI_Mode": 7, "IDD_Set (A)": 87.5,"Old_VID (mV)": 750,  "Target_VID (mV)": 1200 }
+        "4": { "PSI_Mode": 7, "IDD_Set (A)": 105,"Old_VID (mV)": 750,  "Target_VID (mV)": 900  },
+        "5": { "PSI_Mode": 7, "IDD_Set (A)": 105,"Old_VID (mV)": 900,  "Target_VID (mV)": 1200 },
+        "6": { "PSI_Mode": 7, "IDD_Set (A)": 105,"Old_VID (mV)": 750,  "Target_VID (mV)": 1200 }
       }
     },
     "SPEC calibration": {
