@@ -2,6 +2,7 @@ import openpyxl
 from time import sleep
 from openpyxl.cell.cell import MergedCell
 import json
+import os
 
 CPU0_SOC_mainsheet="C:\\Users\\HPS Penang Tester\\Documents\\python\Load_slammer\\LoadSlammer_Testplan\\SP5_CPU_SVI3_VDDCRCPU0_VDDCRSOC_Analysis_V0_2.xlsm"
 #CPU1_VDDIO_mainsheet="C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\LoadSlammer_Testplan\\SP5_CPU_SVI3_VDDCRCPU1_VDDIO_ Analysis_V0_2.xlsm"
@@ -26,6 +27,34 @@ class JSON_excel_extractor:
         with open(self.json, 'r', encoding='utf-8') as f:
             data = json.load(f)
         return data
+    
+
+    def save_output_data(self,output_data, output_dir="Result", filename="Output_data.json"):
+        """
+        Save the given dict to a JSON file inside output_dir/filename.
+        Creates output_dir if it doesn't exist, and overwrites the file each time.
+        
+        Args:
+            output_data (dict):  The data to serialize.
+            output_dir (str):    Folder to place the file in.
+            filename (str):      JSON filename.
+        
+        Returns:
+            str:  Full path to the written file.
+        """
+        # 1. Ensure the directory exists
+        os.makedirs(output_dir, exist_ok=True)
+        
+        # 2. Build the full path
+        self.full_path = os.path.join(output_dir, filename)
+        
+        # 3. Write (and overwrite) the JSON file
+        with open(self.full_path, "w") as f:
+            json.dump(output_data, f, indent=4)
+        
+        print(f"[INFO] Saved output data to: {self.full_path}")
+        return self.full_path
+
     
 
 if __name__ == "__main__":

@@ -11,13 +11,27 @@ LOADSLAMMER_TITLE = "LoadSlammer"
 CONTROL_IDENTIFIER_FILE = r"C:\Users\HPS Penang Tester\Documents\python\Load_slammer\LS_control_identifier.txt"
 
 class LoadSlammerController:
-    def __init__(self, backend="uia", timeout=15):
+    def __init__(self, title: str = "LoadSlammer", backend="uia", timeout=15):
+        self.title=title
         self.app = None
         self.main_window = None
         self.backend = backend
         self.timeout = timeout
         print(f"LoadSlammerController initialized with backend: {self.backend}, timeout: {self.timeout}s")
 
+    def initialize(self):
+        """
+        Connects to the running SVI3 app, restores and maximizes the window, and brings it to focus.
+        """
+        sleep(1)
+        self.app = Application(backend=self.backend).connect(title=self.title)
+        self.main_window = self.app.window(title=self.title, visible_only=False)
+
+        self.main_window.restore()
+        self.main_window.maximize()
+        self.main_window.set_focus()
+        sleep(0.5)
+    
     def connect_to_app(self, start_if_not_running=True):
         try:
             print(f"Attempting to connect to existing {LOADSLAMMER_TITLE} application...")
@@ -146,7 +160,8 @@ if __name__ == "__main__":
     loadslammer_app = LoadSlammerController()
 
     try:
-        if not loadslammer_app.connect_to_app(start_if_not_running=True):
+        #if not loadslammer_app.connect_to_app(start_if_not_running=True):
+        if not loadslammer_app.initialize():    
             sys.exit("❌ Failed to connect to LoadSlammer.")
 
         if not loadslammer_app.change_rail("VDDCR_CPU0"):

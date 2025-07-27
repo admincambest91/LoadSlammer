@@ -1,9 +1,10 @@
 import LS_test_framework
 import sys
 import datetime
-from Test import Test
 from time import sleep as sl
 import excel_main_control as emc
+import json
+import os
 
 
 class VOTF():
@@ -16,6 +17,8 @@ class VOTF():
         self.workbook=workbook
         self.worksheet=worksheet
         self.test_key=test_key
+        self.gui=equipment["GUI"]
+        
         
 
         #setting up test parameter
@@ -26,8 +29,7 @@ class VOTF():
 
         try:
         # Step 1: Connect to the application
-            if not self.loadslammer.connect_to_app(start_if_not_running=True):
-                print("Failed to connect to LoadSlammer. Exiting.")
+            self.loadslammer.initialize()
             self.loadslammer.minimize()
             #initialize SVI3 software
             self.SVI3.initialize()
@@ -42,9 +44,10 @@ class VOTF():
     
     def run(self):
         
-        VOTF_test_result={}
-        VOTF_test_result[self.test_key]={}
-        VOTF_test_result[self.test_key]["VOTF_Test"]={}
+        Output_data = {
+    "Spec_calibration": {"VID voltage": {}},
+    "VOTF_test": {"Test Case":{}}
+}
 
         #set voltage rail in loadslammer:
         self.loadslammer.maximize()
@@ -52,31 +55,101 @@ class VOTF():
         #self.loadslammer.minimize()
         
 
-        #run calibration first
-        for vid_str, vid_info in self.spec_calibration["VID voltage"].items():
-            # vid_str is e.g. "550" (string); convert to int if you need numeric VID
-            vid_mV = int(vid_str)   
-            # pull out the current list
-            currents = vid_info["IDD test current (A)"]
-            measured = []
-            for current in currents:
-                self.loadslammer.adjust_test_current(current)
-                self.loadslammer.slam()
-                self.loadslammer.minimize()
+        # #run calibration first
+        # for vid_str, vid_info in self.spec_calibration["VID voltage"].items():
+            
+        #     # vid_str is e.g. "550" (string); convert to int if you need numeric VID
+        #     vid_mV = int(vid_str) 
+        #     Output_data["Spec_calibration"]["VID voltage"][vid_mV] = {}  
+        #     # pull out the current list
+        #     currents = vid_info["IDD test current (A)"]
+            
+            
+        #     for current in currents:
+                
+        #         Output_data["Spec_calibration"]["VID voltage"][vid_mV][current] = {
+        #     "measured_vout": None
+        # }  
+        #         self.SVI3.maximize()
+        #         #click rail under test in SVI3
+        #         self.SVI3.click(self.test_key)
+        #         sl(0.2)
 
-                self.SVI3.maximize()
-                #click rail under test in SVI3
-                self.SVI3.click(self.test_key)
+        #         #set the voltage
+        #         actual_VID=int(vid_mV)/1000
+        #         self.SVI3.key_in_value('VID','{}V'.format(actual_VID))
+        #         self.SVI3.click('Set_VID')
+        #         sl(0.1)
+        #         self.SVI3.minimize()
 
-                #set the voltage
-                actual_VID=int(vid_mV)/1000
-                self.SVI3.key_in_value('VID','{}V'.format(actual_VID))
-                self.SVI3.click('Set_VID')
-                self.SVI3.minimize()
+        #         self.loadslammer.adjust_test_current(current)
+        #         self.loadslammer.slam()
+        #         sl(0.1)
+        #         self.loadslammer.minimize()
 
-                v_rms=1#self.scope.measure_rms()
-                sl(1)
+
+        #         ############
+        #         #change to scope rading later
+        #         v_rms="{} mV".format(current)#self.scope.measure_rms()
+                
+        #         Output_data["Spec_calibration"]["VID voltage"][vid_mV][current]["measured_vout"] = v_rms
+        #         self.loadslammer.maximize()
+        #         self.loadslammer.stop()
+        #         self.loadslammer.minimize()
         
+        
+        #run the VOTF test
+        #for Test_case, num in self.dynamic_VID["Test Case"].items():
+        
+        
+
+        Output_data["VOTF_test"]["Test Case"]={}    
+        for test_id, test_data in self.dynamic_VID.items():
+            self.loadslammer.minimize()
+            self.SVI3.minimize()
+
+            Output_data["VOTF_test"]["Test Case"]["{}".format(test_id)]={"measured data":None}
+            
+            self.SVI3.maximize()
+            sl(0.1)
+            
+            self.SVI3.key_in_value('PSI','{}'.format(test_data["PSI_Mode"]))
+            self.SVI3.click('Set_PSI')
+
+            self.SVI3.key_in_value('VID','{}mV'.format(test_data["Old_VID (mV)"]))
+            self.SVI3.click('Set_VID')
+
+            self.SVI3.minimize()
+            self.loadslammer.maximize()
+            self.loadslammer.adjust_test_current(test_data["IDD_Set (A)"])
+            self.loadslammer.slam()
+
+
+            self.loadslammer.minimize()
+            #ADD FUNCTION TO TRIGGER THE SCOPE
+            self.gui.build_ui(test_data["Old_VID (mV)"],test_data["Target_VID (mV)"],int(test_id))
+            #self.gui.show()
+            self.loadslammer.maximize()
+            self.loadslammer.stop()
+
+
+            # for key, value in test_data.items():
+            #     print(f"  {key} = {value}")
+         
+        
+        output_dir  = "Result"
+        output_file = os.path.join(output_dir, "Output_data.json")
+
+        # 2. Create the directory if it doesn't exist
+        if not os.path.isdir(output_dir):
+            os.makedirs(output_dir)
+
+        # 3. Dump (and overwrite) your JSON each run
+        with open(output_file, "w") as f:
+            json.dump(Output_data, f, indent=4)
+
+        print(f"Results written to {output_file}")
+        sl(1)
 
             
         
@@ -110,7 +183,7 @@ class VOTF():
         }
 
 if __name__ == "__main__":
-    LS_test_framework.execute("VDDCR_CPU0", VOTF)
+    LS_test_framework.execute("VDDCR_SOC", VOTF)
     
 
     

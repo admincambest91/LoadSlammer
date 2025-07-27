@@ -1,0 +1,31 @@
+{
+    "Spec_calibration": {
+        "VID voltage": {
+            "750": {
+                "0.01": {
+                    "measured_vout": "0.01 mV"
+                },
+                "105": {
+                    "measured_vout": "105 mV"
+                }
+            },
+            "900": {
+                "0.01": {
+                    "measured_vout": "0.01 mV"
+                },
+                "105": {
+                    "measured_vout": "105 mV"
+                }
+            },
+            "1200": {
+                "0.01": {
+                    "measured_vout": "0.01 mV"
+                },
+                "105": {
+                    "measured_vout": "105 mV"
+                }
+            }
+        }
+    },
+    "VOTF_test": {}
+}
