@@ -1,0 +1,72 @@
+{
+  "VDDCR_CPU1": {
+    "Test_Case_1": {
+      "Picture_1_Slew_rate_capture": { "row_start": 37, "row_end":67, "col_start": "B", "col_end": "F" },
+      "Picture_2_VOTFC_Time_capture": { "row_start": 37, "row_end":67, "col_start": "G", "col_end": "L" },
+      "Picture_3_Vmin@VOTF_capture": { "row_start": 37, "row_end":67, "col_start": "M", "col_end": "R" },
+      "Picture_4_VOTF_Down_Slop_Capture": { "row_start": 37, "row_end":67, "col_start": "S", "col_end": "X" }
+    },
+    "Test_Case_2": {
+      "Picture_1_Slew_rate_capture": { "row_start": 70, "row_end": 101, "col_start": "B", "col_end": "F" },
+      "Picture_2_VOTFC_Time_capture": { "row_start": 70, "row_end": 101, "col_start": "G", "col_end": "L" },
+      "Picture_3_Vmin@VOTF_capture": { "row_start": 70, "row_end": 101, "col_start": "M", "col_end": "R" },
+      "Picture_4_VOTF_Down_Slop_Capture": { "row_start": 70, "row_end": 101, "col_start": "S", "col_end": "X" }
+    },
+    "Test_Case_3": {
+      "Picture_1_Slew_rate_capture": { "row_start": 103, "row_end": 134, "col_start": "B", "col_end": "F" },
+      "Picture_2_VOTFC_Time_capture": { "row_start": 103, "row_end": 134, "col_start": "G", "col_end": "L" },
+      "Picture_3_Vmin@VOTF_capture": { "row_start": 103, "row_end": 134, "col_start": "M", "col_end": "R"},
+      "Picture_4_VOTF_Down_Slop_Capture": { "row_start": 103, "row_end": 134, "col_start": "S", "col_end": "X" }
+    },
+    "Test_Case_4": {
+      "Picture_1_Slew_rate_capture": { "row_start": 136, "row_end": 167, "col_start": "B", "col_end": "F" },
+      "Picture_2_VOTFC_Time_capture": { "row_start": 136, "row_end": 167, "col_start": "G", "col_end": "L" },
+      "Picture_3_Vmin@VOTF_capture": { "row_start": 136, "row_end": 167, "col_start": "M", "col_end": "R" },
+      "Picture_4_VOTF_Down_Slop_Capture": { "row_start": 136, "row_end": 167, "col_start": "S", "col_end": "X" }
+    },
+    "Test_Case_5": {
+      "Picture_1_Slew_rate_capture": { "row_start": 169, "row_end": 200, "col_start": "B", "col_end": "F" },
+      "Picture_2_VOTFC_Time_capture": {"row_start": 169, "row_end": 200, "col_start": "G", "col_end": "L" },
+      "Picture_3_Vmin@VOTF_capture": {"row_start": 169, "row_end": 200, "col_start": "M", "col_end": "R" },
+      "Picture_4_VOTF_Down_Slop_Capture": { "row_start": 169, "row_end": 200, "col_start": "S", "col_end": "X"}
+    },
+    "Test_Case_6": {
+      "Picture_1_Slew_rate_capture": { "row_start": 202, "row_end": 233, "col_start": "B", "col_end": "F" },
+      "Picture_2_VOTFC_Time_capture": { "row_start": 202, "row_end": 233, "col_start": "G", "col_end": "L" },
+      "Picture_3_Vmin@VOTF_capture": { "row_start": 202, "row_end": 233, "col_start": "M", "col_end": "R"},
+      "Picture_4_VOTF_Down_Slop_Capture": { "row_start": 202, "row_end": 233, "col_start": "S", "col_end": "X" }
+    },
+    "Test_Case_7": {
+      "Picture_1_Slew_rate_capture": { "row_start": 235, "row_end": 266, "col_start": "B", "col_end": "F" },
+      "Picture_2_VOTFC_Time_capture": {  "row_start": 235, "row_end": 266, "col_start": "G", "col_end": "L" },
+      "Picture_3_Vmin@VOTF_capture": {  "row_start": 235, "row_end": 266,"col_start": "M", "col_end": "R" },
+      "Picture_4_VOTF_Down_Slop_Capture": {  "row_start": 235, "row_end": 266, "col_start": "S", "col_end": "X" }
+    },
+    "Test_Case_8": {
+      "Picture_1_Slew_rate_capture": { "row_start": 268, "row_end":299, "col_start": "B", "col_end": "F" },
+      "Picture_2_VOTFC_Time_capture": { "row_start": 268, "row_end":299, "col_start": "G", "col_end": "L" },
+      "Picture_3_Vmin@VOTF_capture": { "row_start": 268, "row_end":299, "col_start": "M", "col_end": "R"},
+      "Picture_4_VOTF_Down_Slop_Capture": { "row_start": 268, "row_end":299, "col_start": "S", "col_end": "X" }
+    },
+    "Test_Case_9": {
+      "Picture_1_Slew_rate_capture": { "row_start": 301, "row_end": 332, "col_start": "B", "col_end": "F" },
+      "Picture_2_VOTFC_Time_capture": { "row_start": 301, "row_end": 332, "col_start": "G", "col_end": "L" },
+      "Picture_3_Vmin@VOTF_capture": { "row_start": 301, "row_end": 332, "col_start": "M", "col_end": "R" },
+      "Picture_4_VOTF_Down_Slop_Capture": { "row_start": 301, "row_end": 332, "col_start": "S", "col_end": "X" }
+    }
+  },
+  "VDDIO": {
+    "Test_Case_1": {
+      "Picture_1_Slew_rate_capture": { "row_start": 334, "row_end": 365, "col_start": "B", "col_end": "F" },
+      "Picture_2_VOTFC_Time_capture": { "row_start": 334, "row_end": 365, "col_start": "G", "col_end": "L" },
+      "Picture_3_Vmin@VOTF_capture": { "row_start": 334, "row_end": 365, "col_start": "M", "col_end": "R" },
+      "Picture_4_VOTF_Down_Slop_Capture": { "row_start": 334, "row_end": 365, "col_start": "S", "col_end": "X" }
+    },
+    "Test_Case_2": {
+      "Picture_1_Slew_rate_capture": { "row_start": 367, "row_end": 398, "col_start": "B", "col_end": "F" },
+      "Picture_2_VOTFC_Time_capture": { "row_start": 367, "row_end": 398, "col_start": "G", "col_end": "L" },
+      "Picture_3_Vmin@VOTF_capture": { "row_start": 367, "row_end": 398, "col_start": "M", "col_end": "R" },
+      "Picture_4_VOTF_Down_Slop_Capture": { "row_start": 367, "row_end": 398, "col_start": "S", "col_end": "X" }
+    }
+  }
+}
