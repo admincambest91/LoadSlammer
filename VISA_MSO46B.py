@@ -7,22 +7,34 @@ from pyvisa import constants
 class InstrumentManager:
     """Discover and manage DMM and MSO46B instruments."""
     def __init__(self, resource_manager=None):
-        self.rm = resource_manager or pyvisa.ResourceManager()
+        try:
+            # Try without DLL path first
+            self.rm = pyvisa.ResourceManager()
+        except:
+            try:
+                # Try 64-bit DLL
+                self.rm = pyvisa.ResourceManager("C:\Program Files\IVI Foundation\VISA\Win64\ktvisa\ktbin\visa32.dll")
+                #self.rm = pyvisa.ResourceManager('C:\Windows\System32\visa64.dll')
+            except:
+                # Fall back to 32-bit DLL as last resort
+                self.rm = pyvisa.ResourceManager()
+                #self.rm = pyvisa.ResourceManager('C:/Windows/System32/visa32.dll')
         self.dmm = None
         self.scope = None
 
     def discover(self):
+        #resource_str = 'TCPIP0::192.168.0.19::inst0::INSTR'
+        resource_str ="USB0::0x0699::0x0527::C071089::0::INSTR"
         
-        ip = '10.0.140.67'
-        resource_str = f'TCPIP0::{ip}::inst0::INSTR'
-        addr = "TCPIP0::10.0.140.67::4000::SOCKET"
         try:
-            inst = self.rm.open_resource(addr)
+            inst = self.rm.open_resource(resource_str)
             inst.timeout = 5000
+            # Verify it's responding
+            inst.write('*IDN?')
             self.scope = inst
             return self.scope
-        except pyvisa.errors.VisaIOError:
-            # could not open the instrument
+        except pyvisa.errors.VisaIOError as e:
+            print(f"Could not connect to scope at {resource_str}: {e}")
             return None
         
       
@@ -99,6 +111,17 @@ class TektronixMSO46B:
     # def measure_rms(self):
     #     rms = float(self.inst.query("MEASUrement:MEAS4:VALue?").strip())
     #     return round(rms, 3)
+
+    def measure_mean(self):
+    
+        self.inst.write(":MEASure:MEAS3:VALue?")
+        raw = self.inst.read().strip()
+        try:
+            v = round(float(self.inst.query("MEASUREMENT:MEAS3:VALUE?").strip()), 3)
+            #v = float(raw)
+        except ValueError:
+            raise RuntimeError(f"Unexpected MEAN response from scope: '{raw}'")
+        return round(v, 3)
 
     def close(self):
         self.inst.close()

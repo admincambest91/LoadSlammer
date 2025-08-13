@@ -28,7 +28,9 @@ class LoadSlammerController:
         self.main_window = self.app.window(title=self.title, visible_only=False)
 
         self.main_window.restore()
+        sleep(0.5)
         self.main_window.maximize()
+        sleep(0.5)
         self.main_window.set_focus()
         sleep(0.5)
     
@@ -161,8 +163,8 @@ if __name__ == "__main__":
 
     try:
         #if not loadslammer_app.connect_to_app(start_if_not_running=True):
-        if not loadslammer_app.initialize():    
-            sys.exit("❌ Failed to connect to LoadSlammer.")
+        loadslammer_app.initialize()    
+        
 
         if not loadslammer_app.change_rail("VDDCR_CPU0"):
             loadslammer_app.close_app()

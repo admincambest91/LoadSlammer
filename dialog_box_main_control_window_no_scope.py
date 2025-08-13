@@ -17,7 +17,8 @@ class ScopePromptUI:
         self.target_vid = None
         self.test_case_num = None
 
-    def build_ui(self, old_vid, target_vid, test_case_num):
+    def build_ui(self, old_vid, target_vid, test_case_num,output_data):
+        self.output_data = output_data
         self.old_vid = old_vid
         self.target_vid = target_vid
         self.test_case_num = test_case_num

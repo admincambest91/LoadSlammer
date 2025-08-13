@@ -1,6 +1,7 @@
 import os
 import tkinter as tk
 from tkinter import ttk
+import time
 
 
 class ScopePromptUI:
@@ -16,17 +17,22 @@ class ScopePromptUI:
         self.old_vid = None
         self.target_vid = None
         self.test_case_num = None
+        self.completed = False  # Flag to indicate completion
 
-    def build_ui(self, old_vid, target_vid, test_case_num):
+    def build_ui(self, old_vid, target_vid, test_case_num, output_data):
+        self.output_data = output_data
         self.old_vid = old_vid
         self.target_vid = target_vid
         self.test_case_num = test_case_num
 
         self.root = tk.Tk()
         self.root.title("Scope Setup Prompt")
-        self.root.geometry("550x420")
+        self.root.geometry("600x500")  # Increased height
         self.root.resizable(False, False)
-
+        # Bring to front immediately
+        self.root.lift()
+        self.root.attributes("-topmost", True)
+        self.root.after(500, lambda: self.root.attributes("-topmost", False))  # Let it stay on top briefly
         # Title
         ttk.Label(self.root, text=f"Test Case: {self.test_case_num}", font=("Segoe UI", 14, "bold")).pack(pady=10)
 
@@ -47,10 +53,12 @@ class ScopePromptUI:
         self.add_capture_button(screenshot_frame, "Picture_4_VOTF_Down_Slop_Capture")
 
         # Next Button
-        ttk.Button(self.root, text="Next", command=self.on_next).pack(pady=15)
+        Output_data = ttk.Button(self.root, text="Next", command=self.on_next).pack(pady=15)
 
         self.root.protocol("WM_DELETE_WINDOW", self.disable_close)
         self.root.mainloop()
+
+        return Output_data
 
     def add_voltage_row(self, parent, label, value):
         row = ttk.Frame(parent)
@@ -64,7 +72,7 @@ class ScopePromptUI:
         row.pack(fill="x", pady=5)
 
         ttk.Label(row, text=f"Case_{self.test_case_num}_{pic_name}", width=35).pack(side="left", padx=5)
-        ttk.Button(row, text="Capture", command=lambda name=pic_name: self.capture_screenshot(name)).pack(side="left")
+        ttk.Button(row, text="Capture", command=lambda name=pic_name: self.capture_screen(name)).pack(side="left")
 
     def set_vid(self, value):
         """
@@ -80,28 +88,71 @@ class ScopePromptUI:
         except Exception as e:
             print(f"[ERROR] Failed to set VID: {e}")
 
-    def capture_screenshot(self, name):
+    def capture_screen(self, name):
         """
         Captures screenshot from MSO46B scope and saves into Result/rail_name.
         """
         try:
-            folder = os.path.join("Result", self.rail_name)
+            # folder = os.path.join("Result", self.rail_name)
+            folder = os.path.join("C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result", self.rail_name)
             os.makedirs(folder, exist_ok=True)
 
             filename = f"Case_{self.test_case_num}_{name}.png"
             filepath = os.path.join(folder, filename)
 
-            self.scope.inst.write("HARDCopy:INKSaver OFF")
+            # self.output_data["VOTF_test"]["Test Case"]["{}".format(self.test_case_num)]["measured data"]["Picture {}".format(self.test_case_num)] = filepath
+            # Ensure "measured data" is a dictionary
+            if self.output_data["VOTF_test"]["Test Case"]["{}".format(self.test_case_num)]["measured data"] is None:
+                self.output_data["VOTF_test"]["Test Case"]["{}".format(self.test_case_num)]["measured data"] = {}
+
+            # Now safely add your picture path
+
+            if "Picture_1" in filepath:
+                self.output_data["VOTF_test"]["Test Case"]["{}".format(self.test_case_num)]["measured data"][
+                    "Picture 1"] = filepath
+
+            elif "Picture_2" in filepath:
+                self.output_data["VOTF_test"]["Test Case"]["{}".format(self.test_case_num)]["measured data"][
+                    "Picture 2"] = filepath
+
+            if "Picture_3" in filepath:
+                self.output_data["VOTF_test"]["Test Case"]["{}".format(self.test_case_num)]["measured data"][
+                    "Picture 3"] = filepath
+
+            if "Picture_4" in filepath:
+                self.output_data["VOTF_test"]["Test Case"]["{}".format(self.test_case_num)]["measured data"][
+                    "Picture 4"] = filepath
+
+            self.scope.inst.write("HARDCopy:INKSaver ON")
             self.scope.inst.write("HARDCopy:FORMat PNG")
             self.scope.inst.write("HARDCopy:PORT FILE")
             self.scope.inst.write("HARDCopy:LAYout FULL")
             self.scope.inst.write("HARDCopy:PREView OFF")
             self.scope.inst.write("HARDCopy STARt")
 
+            self.scope.inst.timeout = 20000  # 20 seconds
+            self.scope.inst.write('SAVE:IMAGE "C:/Temp.png"')
+            self.scope.inst.query('*OPC?')
+            self.scope.inst.write('FILESystem:READFile "C:/Temp.png"')
             raw_data = self.scope.inst.read_raw()
-
-            with open(filepath, "wb") as f:
+            with open(filepath, 'wb') as f:
                 f.write(raw_data)
+            self.scope.inst.write('FILESystem:DELEte "C:/Temp.png"')
+
+            # raw_data = self.scope.inst.read_raw()
+            # raw_data = self.scope.inst.write("SAVe:IMAGe:{}".format(filepath))
+            # self.scope.inst.write("SAVe:IMAGe:{}".format(filepath))
+            # self.scope.inst.query('*OPC?')
+
+            # self.scope.inst.write('FILESystem:READFile {}'.format(filepath))
+            # self.scope.inst.query('*OPC?')
+            # imgData = self.scope.inst.read_raw(1024*1024)
+
+            # raw_data = self.scope.inst.write("SAVe:IMAGe:VIEWTYpe {FULLScreen}")
+            # SAVE:IMAGE “C:/Dut12–tests.png”
+
+            # with open(filepath, "wb") as f:
+            #     f.write(raw_data)
 
             print(f"[INFO] Screenshot saved: {filepath}")
         except Exception as e:
@@ -109,7 +160,16 @@ class ScopePromptUI:
 
     def on_next(self):
         print("[INFO] Test case complete.")
-        self.root.destroy()
+        self.completed = True
+        self.root.quit()  # Use quit() instead of destroy() to allow mainloop to finish
+
+    def get_output_data(self):
+        """
+        Call this method after mainloop() completes to get the output data
+        """
+        if self.completed:
+            return self.output_data
+        return None
 
     def disable_close(self):
         pass  # Prevent manual window close

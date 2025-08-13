@@ -12,13 +12,15 @@ import LS_main_control_window
 import SVI3_main_control_window
 import VISA_MSO46B
 import dialog_box_main_control_window
-import dialog_box_main_control_window_no_scope
+import general_function 
+#import dialog_box_main_control_window_no_scope
 
 def initialize(
     test_key,
     requested_equipment={},
     requested_parameters={},
     SVI3_coordinate=None,
+    excel_result_coordinate=None,
     workbook= None,
     worksheet=None,
     include_files=[],
@@ -47,15 +49,20 @@ def initialize(
 
     driver_factory = load_ivi_components()
     
+    excel_path=include_files if include_files else None
+    raw_file_name=general_function.extract_sp5_name(excel_path) if excel_path else None
     parameters = {}
+    parameters["raw_file_name"] = raw_file_name
     with open(SVI3_coordinate, 'r') as f:
         SVI3_location = json.load(f)
+    with open(excel_result_coordinate, 'r') as f:
+        excel_result_data = json.load(f)
     #all_test_definitions = json.load(f)
-    parameters=requested_parameters[test_key]
+    parameters.update(requested_parameters[test_key])
 
     #hardware= LoadSlammerController(backend="uia", timeout=20)
     
-    return  load_default_equipment(test_key),parameters,workbook,worksheet,SVI3_location,test_key
+    return  load_default_equipment(test_key),parameters,workbook,worksheet,SVI3_location,excel_result_data,test_key
 
 
 def load_ivi_components():
@@ -67,15 +74,15 @@ def load_default_equipment(test_key):
     try:
         equipment["LoadSlammer"] = LS_main_control_window.LoadSlammerController()
         equipment["SVI3"]=SVI3_main_control_window.SVI3Controller()
-        # mgr = VISA_MSO46B.InstrumentManager()
-        # inst = mgr.discover()               # inst is a pyvisa resource with .write()/.query()
-        # if inst is None:
-        #     raise RuntimeError("No MSO46B found on any VISA resource")
-        equipment["MSO46B"] = 1#VISA_MSO46B.TektronixMSO46B(inst)       # ← now you’re passing the real instrument
+        mgr = VISA_MSO46B.InstrumentManager()
+        inst = mgr.discover()               # inst is a pyvisa resource with .write()/.query()
+        if inst is None:
+            raise RuntimeError("No MSO46B found on any VISA resource")
+        equipment["MSO46B"] = VISA_MSO46B.TektronixMSO46B(inst)       # ← now you’re passing the real instrument
         
         #will use this function later
-        #equipment["GUI"] = dialog_box_main_control_window.ScopePromptUI(equipment["SVI3"],equipment["MSO46B"],test_key)
-        equipment["GUI"] = dialog_box_main_control_window_no_scope.ScopePromptUI(equipment["SVI3"],test_key)
+        equipment["GUI"] = dialog_box_main_control_window.ScopePromptUI(equipment["SVI3"],equipment["MSO46B"],test_key)
+        #equipment["GUI"] = dialog_box_main_control_window_no_scope.ScopePromptUI(equipment["SVI3"],test_key)
 
 
 
@@ -90,8 +97,10 @@ def load_default_equipment(test_key):
 def execute(test_key, test_definition):
     output_status("Initializing...")
 
-    equipment,parameters,workbook,worksheet,SVI3_coordinate,test_key = initialize(
-        test_key, **test_definition.describe()
+
+    # Initialize the test environment
+    equipment,parameters,workbook,worksheet,SVI3_coordinate,excel_result_coordinate,test_key = initialize(
+        test_key, **test_definition.describe(test_key)
     )
 
     required_methods = ["setup", "run", "clean_up", "describe"]
@@ -106,7 +115,7 @@ def execute(test_key, test_definition):
     test_run = test_definition()
     try:
         output_status("Setting Up...")
-        test_run.setup(equipment, parameters,workbook,worksheet,SVI3_coordinate,test_key)
+        test_run.setup(equipment, parameters,workbook,worksheet,SVI3_coordinate,excel_result_coordinate,test_key)
         output_status("Executing Test...")
 
         if "VRTT" in equipment:

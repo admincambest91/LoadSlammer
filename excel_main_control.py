@@ -1,15 +1,17 @@
 import openpyxl
+from openpyxl.utils import column_index_from_string
+from openpyxl.drawing.image import Image
 from time import sleep
-from openpyxl.cell.cell import MergedCell
 import json
 import os
 
 CPU0_SOC_mainsheet="C:\\Users\\HPS Penang Tester\\Documents\\python\Load_slammer\\LoadSlammer_Testplan\\SP5_CPU_SVI3_VDDCRCPU0_VDDCRSOC_Analysis_V0_2.xlsm"
-#CPU1_VDDIO_mainsheet="C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\LoadSlammer_Testplan\\SP5_CPU_SVI3_VDDCRCPU1_VDDIO_ Analysis_V0_2.xlsm"
+CPU1_VDDIO_mainsheet="C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\LoadSlammer_Testplan\\SP5_CPU_SVI3_VDDCRCPU1_VDDIO_ Analysis_V0_2.xlsm"
 
 
 class JSON_excel_extractor:
     def __init__(self, JSON_file,excel_path: str, sheet_name: str = "VOTF_Timing"):
+        
         self.excel_path = excel_path
         self.sheet_name = sheet_name
         self.json=JSON_file

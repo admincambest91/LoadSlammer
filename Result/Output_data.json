@@ -1,31 +1,126 @@
 {
     "Spec_calibration": {
         "VID voltage": {
-            "750": {
+            "550": {
                 "0.01": {
-                    "measured_vout": "0.01 mV"
+                    "measured_vout": 0.55
                 },
-                "105": {
-                    "measured_vout": "105 mV"
+                "87.5": {
+                    "measured_vout": 0.512
+                },
+                "175": {
+                    "measured_vout": 0.475
                 }
             },
             "900": {
                 "0.01": {
-                    "measured_vout": "0.01 mV"
+                    "measured_vout": 0.899
                 },
-                "105": {
-                    "measured_vout": "105 mV"
+                "87.5": {
+                    "measured_vout": 0.861
+                },
+                "175": {
+                    "measured_vout": 0.822
                 }
             },
-            "1200": {
+            "1300": {
                 "0.01": {
-                    "measured_vout": "0.01 mV"
+                    "measured_vout": 1.299
                 },
-                "105": {
-                    "measured_vout": "105 mV"
+                "87.5": {
+                    "measured_vout": 1.26
+                },
+                "175": {
+                    "measured_vout": 1.223
+                }
+            },
+            "1500": {
+                "0.01": {
+                    "measured_vout": 1.497
+                },
+                "87.5": {
+                    "measured_vout": 1.461
+                },
+                "175": {
+                    "measured_vout": 1.421
                 }
             }
         }
     },
-    "VOTF_test": {}
+    "VOTF_test": {
+        "Test Case": {
+            "1": {
+                "measured data": {
+                    "Picture 1": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU1\\Case_1_Picture_1_Slew_rate_capture.png",
+                    "Picture 2": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU1\\Case_1_Picture_2_VOTFC_Time_capture.png",
+                    "Picture 3": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU1\\Case_1_Picture_3_Vmin@VOTF_capture.png",
+                    "Picture 4": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU1\\Case_1_Picture_4_VOTF_Down_Slop_Capture.png"
+                }
+            },
+            "2": {
+                "measured data": {
+                    "Picture 1": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU1\\Case_2_Picture_1_Slew_rate_capture.png",
+                    "Picture 2": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU1\\Case_2_Picture_2_VOTFC_Time_capture.png",
+                    "Picture 3": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU1\\Case_2_Picture_3_Vmin@VOTF_capture.png",
+                    "Picture 4": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU1\\Case_2_Picture_4_VOTF_Down_Slop_Capture.png"
+                }
+            },
+            "3": {
+                "measured data": {
+                    "Picture 1": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU1\\Case_3_Picture_1_Slew_rate_capture.png",
+                    "Picture 2": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU1\\Case_3_Picture_2_VOTFC_Time_capture.png",
+                    "Picture 3": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU1\\Case_3_Picture_3_Vmin@VOTF_capture.png",
+                    "Picture 4": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU1\\Case_3_Picture_4_VOTF_Down_Slop_Capture.png"
+                }
+            },
+            "4": {
+                "measured data": {
+                    "Picture 1": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU1\\Case_4_Picture_1_Slew_rate_capture.png",
+                    "Picture 2": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU1\\Case_4_Picture_2_VOTFC_Time_capture.png",
+                    "Picture 3": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU1\\Case_4_Picture_3_Vmin@VOTF_capture.png",
+                    "Picture 4": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU1\\Case_4_Picture_4_VOTF_Down_Slop_Capture.png"
+                }
+            },
+            "5": {
+                "measured data": {
+                    "Picture 1": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU1\\Case_5_Picture_1_Slew_rate_capture.png",
+                    "Picture 2": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU1\\Case_5_Picture_2_VOTFC_Time_capture.png",
+                    "Picture 3": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU1\\Case_5_Picture_3_Vmin@VOTF_capture.png",
+                    "Picture 4": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU1\\Case_5_Picture_4_VOTF_Down_Slop_Capture.png"
+                }
+            },
+            "6": {
+                "measured data": {
+                    "Picture 1": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU1\\Case_6_Picture_1_Slew_rate_capture.png",
+                    "Picture 2": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU1\\Case_6_Picture_2_VOTFC_Time_capture.png",
+                    "Picture 3": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU1\\Case_6_Picture_3_Vmin@VOTF_capture.png",
+                    "Picture 4": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU1\\Case_6_Picture_4_VOTF_Down_Slop_Capture.png"
+                }
+            },
+            "7": {
+                "measured data": {
+                    "Picture 1": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU1\\Case_7_Picture_1_Slew_rate_capture.png",
+                    "Picture 2": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU1\\Case_7_Picture_2_VOTFC_Time_capture.png",
+                    "Picture 3": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU1\\Case_7_Picture_3_Vmin@VOTF_capture.png",
+                    "Picture 4": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU1\\Case_7_Picture_4_VOTF_Down_Slop_Capture.png"
+                }
+            },
+            "8": {
+                "measured data": {
+                    "Picture 1": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU1\\Case_8_Picture_1_Slew_rate_capture.png",
+                    "Picture 2": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU1\\Case_8_Picture_2_VOTFC_Time_capture.png",
+                    "Picture 3": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU1\\Case_8_Picture_3_Vmin@VOTF_capture.png",
+                    "Picture 4": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU1\\Case_8_Picture_4_VOTF_Down_Slop_Capture.png"
+                }
+            },
+            "9": {
+                "measured data": {
+                    "Picture 1": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU1\\Case_9_Picture_1_Slew_rate_capture.png",
+                    "Picture 2": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU1\\Case_9_Picture_2_VOTFC_Time_capture.png",
+                    "Picture 3": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU1\\Case_9_Picture_3_Vmin@VOTF_capture.png",
+                    "Picture 4": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU1\\Case_9_Picture_4_VOTF_Down_Slop_Capture.png"
+                }
+            }
+        }
+    }
 }
