@@ -2,6 +2,14 @@ import os
 import tkinter as tk
 from tkinter import ttk
 import time
+from console_app import (
+    error_out_if,
+    output_measurement,
+    output_named_measurement,
+    output_status,
+    prompt,
+    output_err
+)
 
 
 class ScopePromptUI:
@@ -28,6 +36,19 @@ class ScopePromptUI:
         self.root = tk.Tk()
         self.root.title("Scope Setup Prompt")
         self.root.geometry("600x500")  # Increased height
+        screen_width = self.root.winfo_screenwidth()
+        screen_height = self.root.winfo_screenheight()
+
+        # Half the screen width, full screen height
+        width = screen_width // 2
+        height = screen_height
+
+        # Align to the left edge
+        x = 0
+        y = 0
+
+        self.root.geometry(f"{width}x{height}+{x}+{y}")
+
         self.root.resizable(False, False)
         # Bring to front immediately
         self.root.lift()
@@ -43,6 +64,16 @@ class ScopePromptUI:
         self.add_voltage_row(voltage_frame, f"Old VID ({old_vid}mV):", old_vid)
         self.add_voltage_row(voltage_frame, f"Target VID ({target_vid}mV):", target_vid)
 
+         # Measurement Group Frame
+        measurement_frame = ttk.LabelFrame(self.root, text="Measurements", padding=10)
+        measurement_frame.pack(padx=10, pady=10, fill="x")
+
+        self.add_measurement_row(measurement_frame, "Picture_1_Slew_rate:")
+        self.add_measurement_row(measurement_frame, "Picture_2_VOTFC_Time:")
+        self.add_measurement_row(measurement_frame, "Picture_3_Vmin@VOTF:")
+        self.add_measurement_row(measurement_frame, "Picture_4_VOTF_Down_Slop:")
+        
+
         # Screenshot Group Frame
         screenshot_frame = ttk.LabelFrame(self.root, text="Scope Capture (stored in Result folder)", padding=10)
         screenshot_frame.pack(padx=10, pady=10, fill="x")
@@ -51,7 +82,8 @@ class ScopePromptUI:
         self.add_capture_button(screenshot_frame, "Picture_2_VOTFC_Time_capture")
         self.add_capture_button(screenshot_frame, "Picture_3_Vmin@VOTF_capture")
         self.add_capture_button(screenshot_frame, "Picture_4_VOTF_Down_Slop_Capture")
-
+        
+       
         # Next Button
         Output_data = ttk.Button(self.root, text="Next", command=self.on_next).pack(pady=15)
 
@@ -59,6 +91,38 @@ class ScopePromptUI:
         self.root.mainloop()
 
         return Output_data
+
+    def add_measurement_row(self, parent, pic_name):
+        row = ttk.Frame(parent)
+        row.pack(fill="x", pady=5)
+
+        ttk.Label(row, text=f"Case_{self.test_case_num}_{pic_name}", width=35).pack(side="left", padx=5)
+        ttk.Button(row, text="Enable Measurement", command=lambda name=pic_name: self.scope_measurement(name)).pack(side="left")
+
+    def scope_measurement(self, pic_name):
+        if "Picture_1" in pic_name:
+            self.scope.clear_all_measurements()
+            time.sleep(0.5) 
+            self.scope.enable_measurements(["RISetime"]) 
+            time.sleep(0.5)  
+            self.scope.enable_cursor()
+            time.sleep(0.5)
+            
+        elif "Picture_2" in pic_name:
+            self.scope.clear_all_measurements()
+            time.sleep(0.5) 
+            self.scope.enable_cursor("OFF")
+            self.scope.measure_maximum()
+            time.sleep(0.5) 
+            output_status(f"[INFO] Performing measurement for {pic_name} - VOTFC Time")
+        elif "Picture_3" in pic_name:
+            output_status(f"[INFO] Performing measurement for {pic_name} - Vmin@VOTF")
+        elif "Picture_4" in pic_name:
+            output_status(f"[INFO] Performing measurement for {pic_name} - VOTF Down Slop")
+        else:
+            output_err(f"[ERROR] Unknown measurement type for {pic_name}")
+            return
+        
 
     def add_voltage_row(self, parent, label, value):
         row = ttk.Frame(parent)
@@ -69,7 +133,7 @@ class ScopePromptUI:
 
     def add_capture_button(self, parent, pic_name):
         row = ttk.Frame(parent)
-        row.pack(fill="x", pady=5)
+        row.pack(fill="x", pady=7)
 
         ttk.Label(row, text=f"Case_{self.test_case_num}_{pic_name}", width=35).pack(side="left", padx=5)
         ttk.Button(row, text="Capture", command=lambda name=pic_name: self.capture_screen(name)).pack(side="left")
@@ -83,10 +147,10 @@ class ScopePromptUI:
             self.svi3.maximize()
             self.svi3.key_in_value("VID", mv_value)
             self.svi3.click("Set_VID")
-            print(f"[INFO] Set VID to {mv_value}")
+            output_status(f"[INFO] Set VID to {mv_value}")
             self.svi3.minimize()
         except Exception as e:
-            print(f"[ERROR] Failed to set VID: {e}")
+            output_err(f"[ERROR] Failed to set VID: {e}")
 
     def capture_screen(self, name):
         """
@@ -100,7 +164,7 @@ class ScopePromptUI:
             filename = f"Case_{self.test_case_num}_{name}.png"
             filepath = os.path.join(folder, filename)
 
-            # self.output_data["VOTF_test"]["Test Case"]["{}".format(self.test_case_num)]["measured data"]["Picture {}".format(self.test_case_num)] = filepath
+            
             # Ensure "measured data" is a dictionary
             if self.output_data["VOTF_test"]["Test Case"]["{}".format(self.test_case_num)]["measured data"] is None:
                 self.output_data["VOTF_test"]["Test Case"]["{}".format(self.test_case_num)]["measured data"] = {}
@@ -108,9 +172,23 @@ class ScopePromptUI:
             # Now safely add your picture path
 
             if "Picture_1" in filepath:
+                rise_time = self.scope.measure_rise_time(["RISETIME"])  # Get the measurement
+                #tA tB in us. 
+                # vA vB in mV
+                tA,tB, vA,vB = self.scope.get_all_cursor_positions()
+                #self.output_data["VOTF_test"]["Test Case"]["{}".format(self.test_case_num)]["measured data"][
+                #    "Picture 1"] = filepath
                 self.output_data["VOTF_test"]["Test Case"]["{}".format(self.test_case_num)]["measured data"][
-                    "Picture 1"] = filepath
-
+                    "Picture 1"] = {
+                        "filepath": filepath,
+                        "rise_time": rise_time,
+                        "time_cursor_A": tA,
+                        "time_cursor_B": tB,
+                        "voltage_cursor_A": vA,
+                        "voltage_cursor_B": vB,
+                        "voltage_delta": abs(vB - vA),
+                        "time_delta": abs(tB - tA)
+                    }
             elif "Picture_2" in filepath:
                 self.output_data["VOTF_test"]["Test Case"]["{}".format(self.test_case_num)]["measured data"][
                     "Picture 2"] = filepath
@@ -134,6 +212,7 @@ class ScopePromptUI:
             self.scope.inst.write('SAVE:IMAGE "C:/Temp.png"')
             self.scope.inst.query('*OPC?')
             self.scope.inst.write('FILESystem:READFile "C:/Temp.png"')
+            time.sleep(0.2)  # Wait for file to be ready
             raw_data = self.scope.inst.read_raw()
             with open(filepath, 'wb') as f:
                 f.write(raw_data)
@@ -154,14 +233,16 @@ class ScopePromptUI:
             # with open(filepath, "wb") as f:
             #     f.write(raw_data)
 
-            print(f"[INFO] Screenshot saved: {filepath}")
+            output_status(f"[INFO] Screenshot of Test{self.test_case_num} - {name} saved: {filepath}")
         except Exception as e:
-            print(f"[ERROR] Scope screenshot failed for {name}: {e}")
+            output_err(f"[ERROR] Scope screenshot failed for {name}: {e}")
 
     def on_next(self):
-        print("[INFO] Test case complete.")
+        output_status("[INFO] Test case complete.")
+        output_status("[INFO] Test case complete.")
         self.completed = True
-        self.root.quit()  # Use quit() instead of destroy() to allow mainloop to finish
+        self.root.iconify()   # minimize the window
+        self.root.quit() # Use quit() instead of destroy() to allow mainloop to finish
 
     def get_output_data(self):
         """

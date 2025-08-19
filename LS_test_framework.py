@@ -13,6 +13,14 @@ import SVI3_main_control_window
 import VISA_MSO46B
 import dialog_box_main_control_window
 import general_function 
+from console_app import (
+    error_out_if,
+    output_measurement,
+    output_named_measurement,
+    output_status,
+    prompt,
+    output_err
+)
 #import dialog_box_main_control_window_no_scope
 
 def initialize(
@@ -47,31 +55,27 @@ def initialize(
             platform.python_version(),
         )
 
-    driver_factory = load_ivi_components()
-    
+    #get the excel file name and stored into parameters file, for final report name append
     excel_path=include_files if include_files else None
     raw_file_name=general_function.extract_sp5_name(excel_path) if excel_path else None
     parameters = {}
     parameters["raw_file_name"] = raw_file_name
+
+    #load SVI3 and excel result coordinate from JSON files , then update parameters
     with open(SVI3_coordinate, 'r') as f:
         SVI3_location = json.load(f)
     with open(excel_result_coordinate, 'r') as f:
         excel_result_data = json.load(f)
-    #all_test_definitions = json.load(f)
     parameters.update(requested_parameters[test_key])
 
-    #hardware= LoadSlammerController(backend="uia", timeout=20)
-    
     return  load_default_equipment(test_key),parameters,workbook,worksheet,SVI3_location,excel_result_data,test_key
 
-
-def load_ivi_components():
-    pass
 
 def load_default_equipment(test_key):
     equipment = {}
     # Running stand alone
     try:
+        #initialize loadslammer, SVI3 and MSO46B
         equipment["LoadSlammer"] = LS_main_control_window.LoadSlammerController()
         equipment["SVI3"]=SVI3_main_control_window.SVI3Controller()
         mgr = VISA_MSO46B.InstrumentManager()
@@ -80,12 +84,8 @@ def load_default_equipment(test_key):
             raise RuntimeError("No MSO46B found on any VISA resource")
         equipment["MSO46B"] = VISA_MSO46B.TektronixMSO46B(inst)       # ← now you’re passing the real instrument
         
-        #will use this function later
         equipment["GUI"] = dialog_box_main_control_window.ScopePromptUI(equipment["SVI3"],equipment["MSO46B"],test_key)
-        #equipment["GUI"] = dialog_box_main_control_window_no_scope.ScopePromptUI(equipment["SVI3"],test_key)
-
-
-
+        
     except Exception as e:
         prompt(
             "Failed to initialized LoadSlammer and SVI3 Apps ",
@@ -104,7 +104,7 @@ def execute(test_key, test_definition):
     )
 
     required_methods = ["setup", "run", "clean_up", "describe"]
-    #inspect.isabstract(test_definition)
+    
     error_out_if(
         not all([p in dir(test_definition) for p in required_methods]),
         "Test definition does not include required methods: {}".format(
@@ -127,7 +127,7 @@ def execute(test_key, test_definition):
 
 
 if __name__ == "__main__":
-    print(
+    output_status(
         "This file is not intended to be run directly. "
         + "Did you mean to run a specific test?"
     )

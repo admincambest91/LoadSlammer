@@ -8,6 +8,14 @@ import os
 from openpyxl.drawing.image import Image
 from openpyxl.utils import column_index_from_string, get_column_letter
 import general_function as ir
+from console_app import (
+    error_out_if,
+    output_measurement,
+    output_named_measurement,
+    output_status,
+    prompt,
+    output_err
+)
 
 
 class VOTF():
@@ -35,117 +43,141 @@ class VOTF():
         # Step 1: Connect to the application
             self.loadslammer.initialize()
             self.loadslammer.minimize()
-            #initialize SVI3 software
+            output_status("successfully load and connect LoadSlammer software")
+        #Step 2: initialize SVI3 software
             self.SVI3.initialize()
             self.SVI3.minimize()
-            print("successfully load and connect SVI3 software")
-                
+            output_status("successfully load and connect SVI3 software")  
             sl(1)
             
         except Exception as e:
-                print(f"\nAn unhandled error occurred during automation: {e}")
+                output_err(f"\nAn unhandled error occurred during automation: {e}")
     
     
     def run(self):
         
+        #Step 3: Initialize output data structure
+        # This will be used to store the results of the test
         Output_data = {
     "Spec_calibration": {"VID voltage": {}},
     "VOTF_test": {"Test Case":{}}
 }
 
-        #set voltage rail in loadslammer:
+        #Step 4: set voltage rail in loadslammer:
         self.loadslammer.maximize()
         self.loadslammer.change_rail(self.test_key)
-        #self.loadslammer.minimize()
         
-        #################################################################################
-        #run calibration first
-        for vid_str, vid_info in self.spec_calibration["VID voltage"].items():
-            self.loadslammer.minimize()
-            # vid_str is e.g. "550" (string); convert to int if you need numeric VID
-            vid_mV = int(vid_str) 
-            Output_data["Spec_calibration"]["VID voltage"][vid_mV] = {}  
-            # pull out the current list
-            
-            #set the voltage
-            print(f"Setting VID to {vid_mV}mV")
-            self.SVI3.maximize()
-            actual_VID=int(vid_mV)/1000
-            self.SVI3.key_in_value('VID','{}V'.format(actual_VID))
-            self.SVI3.click('Set_VID')
-            sl(0.1)
-            self.SVI3.minimize()
-            currents = vid_info["IDD test current (A)"]
+        # #run calibration first
+
+        # #start with VID, iterate through the VID voltage
+        # scope_measurements_setting=["MEAN"]
+        # self.scope.clear_all_measurements()
+        # self.scope.enable_measurements(scope_measurements_setting)
+        # for vid_str, vid_info in self.spec_calibration["VID voltage"].items():
+        #     self.loadslammer.minimize()
+
+        #     #get the VID for SVI3 voltage set later
+        #     vid_mV = int(vid_str)
+
+        #     #create a dictionary for this VID
+        #     #this will be used to store the results for this VID
+        #     #e.g. Output_data["Spec_calibration"]["VID voltage"]["550"] = {}
+        #     #where 550 is the VID in mV
+        #     Output_data["Spec_calibration"]["VID voltage"][vid_mV] = {}  
             
             
-            for current in currents:
-                
-                Output_data["Spec_calibration"]["VID voltage"][vid_mV][current] = {
-            "measured_vout": None}  
-                
-                #click rail under test in SVI3
-                #disable change rail in SVI3, do it manually during start of the test
-                #self.SVI3.click(self.test_key)
-                sl(0.2)
+        #     #set the voltage in SVI3
+        #     #this will set the VID in SVI3 to the VID in mV
+        #     #e.g. if vid_mV is 550, it will set the VID to 550mV
+        #     output_status(f"Setting VID to {vid_mV}mV")
+        #     self.SVI3.maximize()
+        #     actual_VID=int(vid_mV)/1000
+        #     self.SVI3.key_in_value('VID','{}V'.format(actual_VID))
+        #     self.SVI3.click('Set_VID')
+        #     sl(0.5)
+        #     self.SVI3.minimize()
 
-                
-                #set the current
-                self.loadslammer.maximize()
-                
-                self.loadslammer.adjust_test_current(current)
-                self.loadslammer.slam()
-                sl(0.1)
-                self.loadslammer.minimize()
-                v_mean=self.scope.measure_mean()
+        #     #get the currents for this VID
+        #     #this will be a list of currents in A
+        #     #this will be used to set the current in LoadSlammer
+        #     #and to store the results in Output_data
+        #     currents = vid_info["IDD test current (A)"]
 
+        #     #iterate through the currents for this VID
+        #     for current in currents:   
+        #         #create a dictionary for this current. value will be set later
+        #         Output_data["Spec_calibration"]["VID voltage"][vid_mV][current] = {"measured_vout": None}  
+        #         sl(0.2)
+                
+        #         #set the current
+        #         self.loadslammer.maximize()
+        #         self.loadslammer.adjust_test_current(current)
+        #         self.loadslammer.slam()
+        #         output_status(f"Setting current to {current}A for VID {vid_mV}mV")
+        #         sl(0.1)
+        #         self.loadslammer.minimize()
 
-                ############
-                #change to scope rading later
+        #         #get the stable voltage measurement
+        #         is_light_load = (float(current) <= 0.01)
+        #         v_mean = self.scope.measure_stable_voltage(vid_mV, is_light_load)
+        #         Output_data["Spec_calibration"]["VID voltage"][vid_mV][current]["measured_vout"] = v_mean
                 
+        #         # Add measurement quality indicators
+        #         if is_light_load:
+        #             expected_v = float(vid_mV)/1000
+        #             deviation_pct = abs(v_mean - expected_v) / expected_v * 100
+        #             Output_data["Spec_calibration"]["VID voltage"][vid_mV][current]["measurement_quality"] = {
+        #                 "deviation_percent": round(deviation_pct, 2),
+        #                 "is_within_spec": deviation_pct <= 5.0  # 5% tolerance
+        #             }
                 
-                Output_data["Spec_calibration"]["VID voltage"][vid_mV][current]["measured_vout"] =v_mean
-                self.loadslammer.maximize()
-                self.loadslammer.stop()
-                self.loadslammer.minimize()
+        #         self.loadslammer.maximize()
+        #         self.loadslammer.stop()
+        #         self.loadslammer.minimize()
+        #         v_mean = None
         
-        
+        self.scope.clear_all_measurements()
         # #run the VOTF test
-        # #for Test_case, num in self.dynamic_VID["Test Case"].items():
-        
-        
-
         Output_data["VOTF_test"]["Test Case"]={}    
         for test_id, test_data in self.dynamic_VID.items():
             self.loadslammer.minimize()
             self.SVI3.minimize()
 
+            #dict to store the results for  test case
             Output_data["VOTF_test"]["Test Case"]["{}".format(test_id)]={"measured data":None}
             
             self.SVI3.maximize()
             sl(0.1)
             
+            #set the PSI mode in SVI3
             self.SVI3.key_in_value('PSI','{}'.format(test_data["PSI_Mode"]))
             self.SVI3.click('Set_PSI')
 
+            #set the VID in SVI3
             self.SVI3.key_in_value('VID','{}mV'.format(test_data["Old_VID (mV)"]))
             self.SVI3.click('Set_VID')
 
             self.SVI3.minimize()
+
+            #set scope offset following Old VID
+            self.scope.offset(channel=1, offset=test_data["Old_VID (mV)"]/1000)
+            
             self.loadslammer.maximize()
             self.loadslammer.adjust_test_current(test_data["IDD_Set (A)"])
             self.loadslammer.slam()
 
 
             self.loadslammer.minimize()
-            #ADD FUNCTION TO TRIGGER THE SCOPE
-            data=self.gui.build_ui(test_data["Old_VID (mV)"],test_data["Target_VID (mV)"],int(test_id),Output_data)
-            #self.gui.show()
+            
+            #build the UI for the test case result capture from scope
+            self.gui.build_ui(test_data["Old_VID (mV)"],test_data["Target_VID (mV)"],int(test_id),Output_data)
             self.loadslammer.maximize()
             self.loadslammer.stop()
+            self.loadslammer.minimize()
 
 
             # for key, value in test_data.items():
-            #     print(f"  {key} = {value}")
+            #     output_status(f"  {key} = {value}")
          
         
         output_dir  = "Result"
@@ -159,7 +191,7 @@ class VOTF():
         with open(output_file, "w") as f:
             json.dump(Output_data, f, indent=4)
 
-        print(f"Results written to {output_file}")
+        output_status(f"Results written to {output_file}")
         sl(1)
         
 
@@ -202,7 +234,7 @@ class VOTF():
         #         img_path = picture_files["measured data"][picture_key]
 
         #         if not os.path.exists(img_path):
-        #             print(f"⚠ Missing file: {img_path}")
+        #             output_status(f"⚠ Missing file: {img_path}")
         #             continue
                 
                 
@@ -228,7 +260,7 @@ class VOTF():
         #         img = Image(img_path)
         #         self.worksheet.add_image(img, cell_ref)
 
-        #         print("✅ All VOTF images inserted.")
+        #         output_status("✅ All VOTF images inserted.")
 
 
 
@@ -254,22 +286,13 @@ class VOTF():
             parameter_json = "CPU1_VDDIO_votf_parameter.json"
             excel_result_coordinate= "CPU1_VDD1O_excel__result_coordinate.json"
         
-        #This function will return the main excel sheet for the test
-        if test_key == "VDDCR_CPU0" or test_key == "VDDCR_SOC":
-            # CPU0_SOC_mainsheet is the main excel sheet for CPU0_SOC test
-            mainsheet_path="C:\\Users\\HPS Penang Tester\\Documents\\python\Load_slammer\\LoadSlammer_Testplan\\SP5_CPU_SVI3_VDDCRCPU0_VDDCRSOC_Analysis_V0_2.xlsm"
-        elif test_key == "VDDCR_CPU1" or test_key == "VDDIO":
-            # CPU1_VDDIO_mainsheet is the main excel sheet for CPU1_VDDIO test
-            mainsheet_path="C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\LoadSlammer_Testplan\\SP5_CPU_SVI3_VDDCRCPU1_VDDIO_ Analysis_V0_2.xlsm"
-        
-
-
-    # File does not exist; handle the error
+        #SVI3 software coordinate file
         SVI3_coordinate="SVI3_coordinate.json"
 
-        # with open(excel_result_coordinate, 'r') as f:
-        #     excel_result_data = json.load(f)
-
+        #This function will return the main excel sheet for the test
+        mainsheet_path=ir.select_file(test_key)
+        
+        # Extract parameters, and excel 
         extraction=emc.JSON_excel_extractor(parameter_json,mainsheet_path)
         parameter=extraction.load_json_file()
         workbook,worksheet=extraction.load_workbook()

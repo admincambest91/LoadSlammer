@@ -7,6 +7,16 @@ from openpyxl.utils import column_index_from_string
 from time import sleep
 from datetime import datetime
 import platform
+import tkinter as tk
+from tkinter import filedialog
+from console_app import (
+    error_out_if,
+    output_measurement,
+    output_named_measurement,
+    output_status,
+    prompt,
+    output_err
+)
 
 
 def insert_votf_images(worksheet, VOTF_data, VOTF_coordinate,raw_file_name=None):
@@ -24,7 +34,7 @@ def insert_votf_images(worksheet, VOTF_data, VOTF_coordinate,raw_file_name=None)
     for test_case, picture_files in VOTF_data.items():
         coordinates = VOTF_coordinate.get(f"Test_Case_{test_case}")
         if not coordinates:
-            print(f"⚠ No coordinates found for Test_Case_{test_case}")
+            output_status(f"⚠ No coordinates found for Test_Case_{test_case}")
             continue
 
         for i in range(1, 5):
@@ -33,11 +43,11 @@ def insert_votf_images(worksheet, VOTF_data, VOTF_coordinate,raw_file_name=None)
             img_path = picture_files.get("measured data", {}).get(picture_key)
 
             if not img_path:
-                print(f"⚠ Missing path for {picture_key} in Test_Case_{test_case}")
+                output_status(f"⚠ Missing path for {picture_key} in Test_Case_{test_case}")
                 continue
 
             if not os.path.exists(img_path):
-                print(f"⚠ Missing file: {img_path}")
+                output_status(f"⚠ Missing file: {img_path}")
                 continue
 
 
@@ -46,7 +56,7 @@ def insert_votf_images(worksheet, VOTF_data, VOTF_coordinate,raw_file_name=None)
 
             # Get dimensions
             original_width, original_height = pil_img.size
-            print(f"Original image dimensions: {original_width}x{original_height} pixels")
+            #output_status(f"Original image dimensions: {original_width}x{original_height} pixels")
             
             col_start = column_index_from_string(coordinates[coord_key]["col_start"])
             col_end = column_index_from_string(coordinates[coord_key]["col_end"]) if "col_end" in coordinates[coord_key] else col_start
@@ -71,6 +81,7 @@ def insert_votf_images(worksheet, VOTF_data, VOTF_coordinate,raw_file_name=None)
             img.width= total_height_px#insert image width in pixels as float or int (e.g. 405.8)
             img.anchor = "{}{}".format(coordinates[coord_key]["col_start"],row_start) # where you want image to be anchored/start from
             worksheet.add_image(img)
+            output_status(f"✅ Inserted {picture_key} for Test_Case_{test_case} at {coordinates[coord_key]['col_start']}{row_start}")
             sleep(0.5)        
             
             
@@ -84,7 +95,7 @@ def insert_votf_images(worksheet, VOTF_data, VOTF_coordinate,raw_file_name=None)
             # img = Image(img_path)
             # worksheet.add_image(img, cell_ref)
 
-    print("✅ All VOTF images inserted.")
+    output_status("✅ All VOTF images inserted.")
 
 
 def extract_sp5_name(file_path: str) -> str:
@@ -111,6 +122,17 @@ def get_date_time_string():
     else:
         return now.strftime("DATE_%-d_%-m_%Y_TIME_%-I_%M_%p")
 
-# Example usage
-print(get_date_time_string())
+
+
+def select_file(test_key):
+    root = tk.Tk()
+    root.withdraw()  # Hide main window
+    mainsheet = filedialog.askopenfilename(
+        title="Select a mainsheet for {}".format(test_key),
+        filetypes=[("Excel files", "*.xlsx *.xlsm *.xls"), ("All files", "*.*")]
+    )
+    return mainsheet
+
+
+
 

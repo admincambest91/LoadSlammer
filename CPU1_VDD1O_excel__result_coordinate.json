@@ -25,6 +25,32 @@
           "row_end": 68,
           "col_start": "S",
           "col_end": "X"
+        },
+        "single_cell_result": {
+          "measured 20% VID up": {
+            "row": 49,
+            "column": "A"
+          },
+          "measured 80% VID up": {
+            "row": 52,
+            "column": "A"
+          },
+          "change in time(us)": {
+            "row": 55,
+            "column": "A"
+          },
+          "VOTF time(us)": {
+            "row": 58,
+            "column": "A"
+          },
+          "Vmin@VOTF": {
+            "row": 64,
+            "column": "A"
+          },
+          "Vmax@VOTF": {
+            "row": 67,
+            "column": "A"
+          }
         }
       },
       "Test_Case_2": {
@@ -51,32 +77,84 @@
           "row_end": 101,
           "col_start": "S",
           "col_end": "X"
+        },
+        "single_cell_result": {
+          "measured 20% VID up": {
+            "row": 82,
+            "column": "A"
+          },
+          "measured 80% VID up": {
+            "row": 85,
+            "column": "A"
+          },
+          "change in time(us)": {
+            "row": 88,
+            "column": "A"
+          },
+          "VOTF time(us)": {
+            "row": 91,
+            "column": "A"
+          },
+          "Vmin@VOTF": {
+            "row": 97,
+            "column": "A"
+          },
+          "Vmax@VOTF": {
+            "row": 100,
+            "column": "A"
+          }
         }
       },
       "Test_Case_3": {
         "Picture_1_Slew_rate_capture": {
-          "row_start": 103,
-          "row_end": 134,
+          "row_start": 101,
+          "row_end": 132,
           "col_start": "B",
           "col_end": "F"
         },
         "Picture_2_VOTFC_Time_capture": {
-          "row_start": 103,
-          "row_end": 134,
+          "row_start": 101,
+          "row_end": 132,
           "col_start": "G",
           "col_end": "L"
         },
         "Picture_3_Vmin@VOTF_capture": {
-          "row_start": 103,
-          "row_end": 134,
+          "row_start": 101,
+          "row_end": 132,
           "col_start": "M",
           "col_end": "R"
         },
         "Picture_4_VOTF_Down_Slop_Capture": {
-          "row_start": 103,
-          "row_end": 134,
+          "row_start": 101,
+          "row_end": 132,
           "col_start": "S",
           "col_end": "X"
+        },
+        "single_cell_result": {
+          "measured 20% VID up": {
+            "row": 115,
+            "column": "A"
+          },
+          "measured 80% VID up": {
+            "row": 118,
+            "column": "A"
+          },
+          "change in time(us)": {
+            "row": 121,
+            "column": "A"
+          },
+          "VOTF time(us)": {
+            "row": 124,
+            "column": "A"
+          },
+          "Vmin@VOTF": {
+            "row": 130,
+            "column": "A"
+          },
+          "Vmax@VOTF": {
+            "row": 133,
+            "column": "A"
+          }
         }
       },
       "Test_Case_4": {
@@ -103,6 +181,32 @@
           "row_end": 167,
           "col_start": "S",
           "col_end": "X"
+        },
+        "single_cell_result": {
+          "measured 20% VID up": {
+            "row": 148,
+            "column": "A"
+          },
+          "measured 80% VID up": {
+            "row": 151,
+            "column": "A"
+          },
+          "change in time(us)": {
+            "row": 154,
+            "column": "A"
+          },
+          "VOTF time(us)": {
+            "row": 157,
+            "column": "A"
+          },
+          "Vmin@VOTF": {
+            "row": 163,
+            "column": "A"
+          },
+          "Vmax@VOTF": {
+            "row": 166,
+            "column": "A"
+          }
         }
       },
       "Test_Case_5": {
@@ -129,6 +233,32 @@
           "row_end": 200,
           "col_start": "S",
           "col_end": "X"
+        },
+        "single_cell_result": {
+          "measured 20% VID up": {
+            "row": 181,
+            "column": "A"
+          },
+          "measured 80% VID up": {
+            "row": 184,
+            "column": "A"
+          },
+          "change in time(us)": {
+            "row": 187,
+            "column": "A"
+          },
+          "VOTF time(us)": {
+            "row": 190,
+            "column": "A"
+          },
+          "Vmin@VOTF": {
+            "row": 196,
+            "column": "A"
+          },
+          "Vmax@VOTF": {
+            "row": 199,
+            "column": "A"
+          }
         }
       },
       "Test_Case_6": {
@@ -155,6 +285,32 @@
           "row_end": 233,
           "col_start": "S",
           "col_end": "X"
+        },
+        "single_cell_result": {
+          "measured 20% VID up": {
+            "row": 214,
+            "column": "A"
+          },
+          "measured 80% VID up": {
+            "row": 217,
+            "column": "A"
+          },
+          "change in time(us)": {
+            "row": 220,
+            "column": "A"
+          },
+          "VOTF time(us)": {
+            "row": 223,
+            "column": "A"
+          },
+          "Vmin@VOTF": {
+            "row": 229,
+            "column": "A"
+          },
+          "Vmax@VOTF": {
+            "row": 232,
+            "column": "A"
+          }
         }
       },
       "Test_Case_7": {
@@ -181,6 +337,32 @@
           "row_end": 266,
           "col_start": "S",
           "col_end": "X"
+        },
+        "single_cell_result": {
+          "measured 20% VID up": {
+            "row": 247,
+            "column": "A"
+          },
+          "measured 80% VID up": {
+            "row": 250,
+            "column": "A"
+          },
+          "change in time(us)": {
+            "row": 253,
+            "column": "A"
+          },
+          "VOTF time(us)": {
+            "row": 256,
+            "column": "A"
+          },
+          "Vmin@VOTF": {
+            "row": 262,
+            "column": "A"
+          },
+          "Vmax@VOTF": {
+            "row": 265,
+            "column": "A"
+          }
         }
       },
       "Test_Case_8": {
@@ -207,6 +389,32 @@
           "row_end": 399,
           "col_start": "S",
           "col_end": "X"
+        },
+        "single_cell_result": {
+          "measured 20% VID up": {
+            "row": 280,
+            "column": "A"
+          },
+          "measured 80% VID up": {
+            "row": 283,
+            "column": "A"
+          },
+          "change in time(us)": {
+            "row": 286,
+            "column": "A"
+          },
+          "VOTF time(us)": {
+            "row": 289,
+            "column": "A"
+          },
+          "Vmin@VOTF": {
+            "row": 292,
+            "column": "A"
+          },
+          "Vmax@VOTF": {
+            "row": 295,
+            "column": "A"
+          }
         }
       },
       "Test_Case_9": {
@@ -233,6 +441,32 @@
           "row_end": 332,
           "col_start": "S",
           "col_end": "X"
+        },
+        "single_cell_result": {
+          "measured 20% VID up": {
+            "row": 313,
+            "column": "A"
+          },
+          "measured 80% VID up": {
+            "row": 316,
+            "column": "A"
+          },
+          "change in time(us)": {
+            "row": 319,
+            "column": "A"
+          },
+          "VOTF time(us)": {
+            "row": 322,
+            "column": "A"
+          },
+          "Vmin@VOTF": {
+            "row": 328,
+            "column": "A"
+          },
+          "Vmax@VOTF": {
+            "row": 331,
+            "column": "A"
+          }
         }
       }
     },
@@ -351,6 +585,32 @@
           "row_end": 365,
           "col_start": "S",
           "col_end": "X"
+        },
+        "single_cell_result": {
+          "measured 20% VID up": {
+            "row": 346,
+            "column": "A"
+          },
+          "measured 80% VID up": {
+            "row": 349,
+            "column": "A"
+          },
+          "change in time(us)": {
+            "row": 352,
+            "column": "A"
+          },
+          "VOTF time(us)": {
+            "row": 355,
+            "column": "A"
+          },
+          "Vmin@VOTF": {
+            "row": 361,
+            "column": "A"
+          },
+          "Vmax@VOTF": {
+            "row": 364,
+            "column": "A"
+          }
         }
       },
       "Test_Case_2": {
@@ -377,6 +637,32 @@
           "row_end": 398,
           "col_start": "S",
           "col_end": "X"
+        },
+        "single_cell_result": {
+          "measured 20% VID up": {
+            "row": 379,
+            "column": "A"
+          },
+          "measured 80% VID up": {
+            "row": 382,
+            "column": "A"
+          },
+          "change in time(us)": {
+            "row": 385,
+            "column": "A"
+          },
+          "VOTF time(us)": {
+            "row": 388,
+            "column": "A"
+          },
+          "Vmin@VOTF": {
+            "row": 394,
+            "column": "A"
+          },
+          "Vmax@VOTF": {
+            "row": 397,
+            "column": "A"
+          }
         }
       }
     },
@@ -414,7 +700,6 @@
             }
           }
         }
-        
       }
     }
   }
