@@ -103,7 +103,7 @@ class ScopePromptUI:
         if "Picture_1" in pic_name:
             self.scope.clear_all_measurements()
             time.sleep(0.5) 
-            self.scope.enable_measurements(["RISetime"]) 
+            self.scope.enable_measurements(["RISetime","MAXIMUM"]) 
             time.sleep(0.5)  
             self.scope.enable_cursor()
             time.sleep(0.5)
@@ -112,32 +112,147 @@ class ScopePromptUI:
             self.scope.clear_all_measurements()
             time.sleep(0.5) 
             self.scope.enable_cursor("OFF")
-            self.scope.measure_maximum()
+            time.sleep(0.5)
+            self.scope.enable_cursor("ON")
             time.sleep(0.5) 
-            output_status(f"[INFO] Performing measurement for {pic_name} - VOTFC Time")
+            
         elif "Picture_3" in pic_name:
-            output_status(f"[INFO] Performing measurement for {pic_name} - Vmin@VOTF")
+            self.scope.clear_all_measurements()
+            time.sleep(0.5) 
+            self.scope.enable_cursor("OFF")
+            time.sleep(0.5)
+            self.scope.enable_cursor("ON")
+            time.sleep(0.5) 
         elif "Picture_4" in pic_name:
-            output_status(f"[INFO] Performing measurement for {pic_name} - VOTF Down Slop")
+            self.scope.clear_all_measurements()
+            time.sleep(0.5) 
+            self.scope.enable_cursor("OFF")
+            time.sleep(0.5)
+            self.scope.enable_cursor("ON")
+            time.sleep(0.5) 
         else:
             output_err(f"[ERROR] Unknown measurement type for {pic_name}")
             return
-        
-
+    
     def add_voltage_row(self, parent, label, value):
         row = ttk.Frame(parent)
         row.pack(fill="x", pady=5)
 
-        ttk.Label(row, text=label, width=30).pack(side="left", padx=5)
-        ttk.Button(row, text="Set VID", command=lambda: self.set_vid(value)).pack(side="left", padx=5)
+        # Left side - VID setting
+        left_frame = ttk.Frame(row)
+        left_frame.pack(side="left", fill="x", expand=True)
+        
+        ttk.Label(left_frame, text=label, width=30).pack(side="left", padx=5)
+        ttk.Button(left_frame, text="Set VID", command=lambda: self.set_vid(value)).pack(side="left", padx=5)
+        
+        # Right side - Trigger level buttons (only for the first row)
+        if "Old VID" in label:
+            right_frame = ttk.Frame(row)
+            right_frame.pack(side="right", padx=10)
+            
+            # Rise trigger button
+            ttk.Button(right_frame, text="Set Trigger Rise", 
+                    command=lambda: self.scope.set_trigger_level(self.old_vid/1000, 
+                                                                self.target_vid/1000, 
+                                                                slope="RISE")).pack(side="left", padx=2)
+            
+            # Fall trigger button
+            ttk.Button(right_frame, text="Set Trigger Fall", 
+                    command=lambda: self.scope.set_trigger_level(self.old_vid/1000, 
+                                                                self.target_vid/1000, 
+                                                                slope="FALL")).pack(side="left", padx=2)
+    
+    
+    # def add_voltage_row(self, parent, label, value):
+    #     row = ttk.Frame(parent)
+    #     row.pack(fill="x", pady=5)
 
+    #     # Left side - VID setting
+    #     left_frame = ttk.Frame(row)
+    #     left_frame.pack(side="left", fill="x", expand=True)
+        
+    #     ttk.Label(left_frame, text=label, width=30).pack(side="left", padx=5)
+    #     ttk.Button(left_frame, text="Set VID", command=lambda: self.set_vid(value)).pack(side="left", padx=5)
+        
+    #     # Right side - Trigger level button (only for the first row)
+    #     if "Old VID" in label:
+    #         trigger_btn = ttk.Button(row, text="Set Trigger Level", 
+    #                             command=lambda: self.scope.set_trigger_level(self.old_vid/1000, self.target_vid/1000))
+    #         trigger_btn.pack(side="right", padx=10)    
+
+    # def add_voltage_row(self, parent, label, value):
+    #     row = ttk.Frame(parent)
+    #     row.pack(fill="x", pady=5)
+
+    #     ttk.Label(row, text=label, width=30).pack(side="left", padx=5)
+    #     ttk.Button(row, text="Set VID", command=lambda: self.set_vid(value)).pack(side="left", padx=5)
+
+    # def add_capture_button(self, parent, pic_name):
+    #     row = ttk.Frame(parent)
+    #     row.pack(fill="x", pady=7)
+
+    #     ttk.Label(row, text=f"Case_{self.test_case_num}_{pic_name}", width=35).pack(side="left", padx=5)
+    #     ttk.Button(row, text="Capture", command=lambda name=pic_name: self.capture_screen(name)).pack(side="left")
+    #     # if pic_name == "Picture_1_Slew_rate_capture":
+    #     #     ttk.Button(row, text="Minimum", command=lambda name=pic_name: self.get_minimum(name)).pack(side="left", padx=2)
+    # ############new line to add tooltip
+    
+    
     def add_capture_button(self, parent, pic_name):
         row = ttk.Frame(parent)
         row.pack(fill="x", pady=7)
 
+        # Create label and capture button
         ttk.Label(row, text=f"Case_{self.test_case_num}_{pic_name}", width=35).pack(side="left", padx=5)
-        ttk.Button(row, text="Capture", command=lambda name=pic_name: self.capture_screen(name)).pack(side="left")
+        capture_btn = ttk.Button(row, text="Capture", command=lambda name=pic_name: self.capture_screen(name))
+        capture_btn.pack(side="left")
 
+        # Create info box with tooltip
+        info_text = self.get_tooltip_text(pic_name)
+        info_box = ttk.Label(row, text="ℹ", background='lightgray', width=3)
+        info_box.pack(side="left", padx=5)
+
+        # Create tooltip
+        self.create_tooltip(info_box, info_text)
+
+    def get_tooltip_text(self, pic_name):
+        """Return specific tooltip text based on picture name"""
+        tooltips = {
+            "Picture_1_Slew_rate_capture": "Capture slew rate measurement\n- Before capture, Set x and y cursors at the intersection for 20% and 80% VID\n",
+            "Picture_2_VOTFC_Time_capture": "Capture VOTF time measurement\n- Place vertical cursor B at the end of clk and Place vertical cursor A at 20 percent lower than targeted voltage\n- Measure time between points",
+            "Picture_3_Vmin@VOTF_capture": "Capture minimum voltage during VOTF\n- Place horizontal cursor B at the level 20 percent lower than targeted voltage. Place horizontal cursor A at targeted voltage\n",
+            "Picture_4_VOTF_Down_Slop_Capture": "Capture VOTF down slope\n- Set cursors for target VID and VID-20mV\n -Dont forget to change slope to falling\n- Measure time between points",
+        }
+        return tooltips.get(pic_name, "No tooltip available")
+
+    def create_tooltip(self, widget, text):
+        """Create a tooltip for a given widget"""
+        tooltip = tk.Toplevel(widget)
+        tooltip.withdraw()
+        tooltip.overrideredirect(True)
+        
+        label = ttk.Label(tooltip, text=text, justify="left", background="#ffffe0", 
+                        relief="solid", borderwidth=1, padding=(5, 5))
+        label.pack()
+
+        def show_tooltip(event=None):
+            tooltip.deiconify()
+            # Position tooltip near the info box
+            x = widget.winfo_rootx() + widget.winfo_width()
+            y = widget.winfo_rooty()
+            tooltip.geometry(f"+{x+5}+{y}")
+
+        def hide_tooltip(event=None):
+            tooltip.withdraw()
+
+        widget.bind("<Enter>", show_tooltip)
+        widget.bind("<Leave>", hide_tooltip)
+        
+    
+    
+    
+    
+    
     def set_vid(self, value):
         """
         Sends VID to SVI3.
@@ -152,6 +267,7 @@ class ScopePromptUI:
         except Exception as e:
             output_err(f"[ERROR] Failed to set VID: {e}")
 
+    
     def capture_screen(self, name):
         """
         Captures screenshot from MSO46B scope and saves into Result/rail_name.
@@ -172,7 +288,8 @@ class ScopePromptUI:
             # Now safely add your picture path
 
             if "Picture_1" in filepath:
-                rise_time = self.scope.measure_rise_time(["RISETIME"])  # Get the measurement
+                rise_time = self.scope.measure_rise_time(["RISETIME"]) 
+                maximum_voltage=self.scope.measure_maximum() # Get the measurement
                 #tA tB in us. 
                 # vA vB in mV
                 tA,tB, vA,vB = self.scope.get_all_cursor_positions()
@@ -182,24 +299,54 @@ class ScopePromptUI:
                     "Picture 1"] = {
                         "filepath": filepath,
                         "rise_time": rise_time,
-                        "time_cursor_A": tA,
-                        "time_cursor_B": tB,
-                        "voltage_cursor_A": vA,
-                        "voltage_cursor_B": vB,
+                        "time_cursor_A(us)": tA,
+                        "time_cursor_B(us)": tB,
+                        "measure 80% VID up": vA,
+                        "Measure 20% VID up": vB,
                         "voltage_delta": abs(vB - vA),
-                        "time_delta": abs(tB - tA)
+                        "Change in time(us)": abs(tB - tA),
+                        "Vmax@VOTF(mV)": maximum_voltage
                     }
             elif "Picture_2" in filepath:
+                #tA tB in us. 
+                # vA vB in mV
+                tA,tB, vA,vB = self.scope.get_all_cursor_positions()
+                time.sleep(0.5)
                 self.output_data["VOTF_test"]["Test Case"]["{}".format(self.test_case_num)]["measured data"][
-                    "Picture 2"] = filepath
+                    "Picture 2"] = {
+                        "filepath": filepath,
+                        "VOTF Time (us)": abs(tB - tA)
+                    }
+                # self.output_data["VOTF_test"]["Test Case"]["{}".format(self.test_case_num)]["measured data"][
+                #     "Picture 2"] = filepath
 
             if "Picture_3" in filepath:
+                #tA tB in us. 
+                # vA vB in mV
+                tA,tB, vA,vB = self.scope.get_all_cursor_positions()
+                time.sleep(0.5)
                 self.output_data["VOTF_test"]["Test Case"]["{}".format(self.test_case_num)]["measured data"][
-                    "Picture 3"] = filepath
+                    "Picture 3"] = {
+                        "filepath": filepath,
+                        "Vmin@VOTF(mV)": vB, 
+                    }
+                # self.output_data["VOTF_test"]["Test Case"]["{}".format(self.test_case_num)]["measured data"][
+                #     "Picture 3"] = filepath
 
             if "Picture_4" in filepath:
+                #tA tB in us. 
+                # vA vB in mV
+                tA,tB, vA,vB = self.scope.get_all_cursor_positions()
+                time.sleep(0.5)
                 self.output_data["VOTF_test"]["Test Case"]["{}".format(self.test_case_num)]["measured data"][
-                    "Picture 4"] = filepath
+                    "Picture 4"] = {
+                        "filepath": filepath,
+                        "measure target  VID(mV))": vA, 
+                        "measure target VID -20mV(mV)": vB,
+                    }   
+
+                # self.output_data["VOTF_test"]["Test Case"]["{}".format(self.test_case_num)]["measured data"][
+                #     "Picture 4"] = filepath
 
             self.scope.inst.write("HARDCopy:INKSaver ON")
             self.scope.inst.write("HARDCopy:FORMat PNG")

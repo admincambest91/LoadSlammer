@@ -33,6 +33,7 @@ def insert_votf_images(worksheet, VOTF_data, VOTF_coordinate,raw_file_name=None)
     """
     for test_case, picture_files in VOTF_data.items():
         coordinates = VOTF_coordinate.get(f"Test_Case_{test_case}")
+        single_cell_coordinate=coordinates['single_cell_result']
         if not coordinates:
             output_status(f"⚠ No coordinates found for Test_Case_{test_case}")
             continue
@@ -40,7 +41,35 @@ def insert_votf_images(worksheet, VOTF_data, VOTF_coordinate,raw_file_name=None)
         for i in range(1, 5):
             picture_key = f"Picture {i}"
             coord_key = list(coordinates.keys())[i - 1]  # get the coordinate dict key
-            img_path = picture_files.get("measured data", {}).get(picture_key)
+            img_path =picture_files["measured data"][picture_key]["filepath"] #picture_files.get("measured data", {}).get(picture_key)
+
+            #place for single cell result
+            if picture_key == "Picture 1":
+               #add rise time to excel
+                worksheet.cell(row= single_cell_coordinate["change in time(us)"]["row"],
+                               column=column_index_from_string(single_cell_coordinate["change in time(us)"]["column"])).value = VOTF_data[test_case]["measured data"][picture_key]["Change in time(us)"]
+                
+                #add measure 20% VID up to excel
+                worksheet.cell(row= single_cell_coordinate["measured 20% VID up"]["row"],
+                               column=column_index_from_string(single_cell_coordinate["measured 20% VID up"]["column"])).value = VOTF_data[test_case]["measured data"][picture_key]["Measure 20% VID up"]
+
+                #add measure 80% VID up to excel
+                worksheet.cell(row= single_cell_coordinate["measured 80% VID up"]["row"],
+                        column=column_index_from_string(single_cell_coordinate["measured 80% VID up"]["column"])).value = VOTF_data[test_case]["measured data"][picture_key]["measure 80% VID up"]
+
+                #add measure Vmax@VOTF(mV) to excel
+                worksheet.cell(row= single_cell_coordinate["Vmax@VOTF"]["row"],
+                        column=column_index_from_string(single_cell_coordinate["Vmax@VOTF"]["column"])).value = VOTF_data[test_case]["measured data"][picture_key]["Vmax@VOTF(mV)"]
+
+            if picture_key == "Picture 2":
+                #add measure VOTF Time(us) to excel
+                worksheet.cell(row= single_cell_coordinate["VOTF time(us)"]["row"],
+                        column=column_index_from_string(single_cell_coordinate["VOTF time(us)"]["column"])).value = VOTF_data[test_case]["measured data"][picture_key]["VOTF Time (us)"]
+
+            if picture_key=="Picture 3":
+                #add measure Vmin@VOTF(mV) to excel
+                worksheet.cell(row= single_cell_coordinate["Vmin@VOTF"]["row"],
+                        column=column_index_from_string(single_cell_coordinate["Vmin@VOTF"]["column"])).value = VOTF_data[test_case]["measured data"][picture_key]["Vmin@VOTF(mV)"]
 
             if not img_path:
                 output_status(f"⚠ Missing path for {picture_key} in Test_Case_{test_case}")

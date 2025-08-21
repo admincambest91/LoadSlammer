@@ -180,6 +180,20 @@ class TektronixMSO46B:
         delta = float(self.inst.query(":CURSor:HBArs:DELTa?"))
         return y1, y2, delta
 
+    def set_trigger_level(self, v1, v2, mode="NORMal", slope="RISE"): #mode:AUTO|NORMal
+        
+        # 1) Calculate midpoint
+        # v1=float(v1/1000)  # Convert to volts
+        # v2=float(v2/1000)  # Convert to volts
+        midpoint = round((v1 + v2) / 2.0,3)  # Midpoint in volts
+         
+        self.inst.write(f"TRIGGER:A:MODE {mode}")
+        time.sleep(0.5)  # Give it a moment to process
+        self.setup_trigger(level=midpoint, slope=slope)  # Set trigger level
+       
+        # self.inst.write(f"TRIGger:A:LEVel {midpoint}")
+
+        #return midpoint
 
 
     def calculate_trigger_level(self):
@@ -230,6 +244,10 @@ class TektronixMSO46B:
             self.inst.write(f":MEASure:MEAS{rise_time_idx}:VALue?")
             time.sleep(0.5)
             raw = self.inst.read().strip()
+        elif "MSO46B" in raw:
+            self.inst.write(f":MEASure:MEAS{rise_time_idx}:VALue?")
+            time.sleep(0.5)
+            raw = self.inst.read().strip()
         
         try:
             rise_time_value = float(raw)
@@ -265,7 +283,8 @@ class TektronixMSO46B:
 
         try:
             # Query the same slot directly and convert to float
-            v = round(float(self.inst.query("MEASUREMENT:MEAS{}:VALUE?".format(self.types_dict["maximum"])).strip()), 3)
+            v=round((float(self.inst.query("MEASUREMENT:MEAS{}:VALUE?".format(self.types_dict["maximum"])).strip())) * 1e3,3)
+            #v = round(float(self.inst.query("MEASUREMENT:MEAS{}:VALUE?".format(self.types_dict["maximum"])).strip()), 3)
         except ValueError:
             raise RuntimeError(f"Unexpected MAXIMUM response from scope: '{raw}'")
         

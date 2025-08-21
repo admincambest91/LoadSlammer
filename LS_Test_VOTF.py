@@ -67,74 +67,74 @@ class VOTF():
         self.loadslammer.maximize()
         self.loadslammer.change_rail(self.test_key)
         
-        # #run calibration first
+        #run calibration first
 
-        # #start with VID, iterate through the VID voltage
-        # scope_measurements_setting=["MEAN"]
-        # self.scope.clear_all_measurements()
-        # self.scope.enable_measurements(scope_measurements_setting)
-        # for vid_str, vid_info in self.spec_calibration["VID voltage"].items():
-        #     self.loadslammer.minimize()
+        #start with VID, iterate through the VID voltage
+        scope_measurements_setting=["MEAN"]
+        self.scope.clear_all_measurements()
+        self.scope.enable_measurements(scope_measurements_setting)
+        for vid_str, vid_info in self.spec_calibration["VID voltage"].items():
+            self.loadslammer.minimize()
 
-        #     #get the VID for SVI3 voltage set later
-        #     vid_mV = int(vid_str)
+            #get the VID for SVI3 voltage set later
+            vid_mV = int(vid_str)
 
-        #     #create a dictionary for this VID
-        #     #this will be used to store the results for this VID
-        #     #e.g. Output_data["Spec_calibration"]["VID voltage"]["550"] = {}
-        #     #where 550 is the VID in mV
-        #     Output_data["Spec_calibration"]["VID voltage"][vid_mV] = {}  
+            #create a dictionary for this VID
+            #this will be used to store the results for this VID
+            #e.g. Output_data["Spec_calibration"]["VID voltage"]["550"] = {}
+            #where 550 is the VID in mV
+            Output_data["Spec_calibration"]["VID voltage"][vid_mV] = {}  
             
             
-        #     #set the voltage in SVI3
-        #     #this will set the VID in SVI3 to the VID in mV
-        #     #e.g. if vid_mV is 550, it will set the VID to 550mV
-        #     output_status(f"Setting VID to {vid_mV}mV")
-        #     self.SVI3.maximize()
-        #     actual_VID=int(vid_mV)/1000
-        #     self.SVI3.key_in_value('VID','{}V'.format(actual_VID))
-        #     self.SVI3.click('Set_VID')
-        #     sl(0.5)
-        #     self.SVI3.minimize()
+            #set the voltage in SVI3
+            #this will set the VID in SVI3 to the VID in mV
+            #e.g. if vid_mV is 550, it will set the VID to 550mV
+            output_status(f"Setting VID to {vid_mV}mV")
+            self.SVI3.maximize()
+            actual_VID=int(vid_mV)/1000
+            self.SVI3.key_in_value('VID','{}V'.format(actual_VID))
+            self.SVI3.click('Set_VID')
+            sl(0.5)
+            self.SVI3.minimize()
 
-        #     #get the currents for this VID
-        #     #this will be a list of currents in A
-        #     #this will be used to set the current in LoadSlammer
-        #     #and to store the results in Output_data
-        #     currents = vid_info["IDD test current (A)"]
+            #get the currents for this VID
+            #this will be a list of currents in A
+            #this will be used to set the current in LoadSlammer
+            #and to store the results in Output_data
+            currents = vid_info["IDD test current (A)"]
 
-        #     #iterate through the currents for this VID
-        #     for current in currents:   
-        #         #create a dictionary for this current. value will be set later
-        #         Output_data["Spec_calibration"]["VID voltage"][vid_mV][current] = {"measured_vout": None}  
-        #         sl(0.2)
+            #iterate through the currents for this VID
+            for current in currents:   
+                #create a dictionary for this current. value will be set later
+                Output_data["Spec_calibration"]["VID voltage"][vid_mV][current] = {"measured_vout": None}  
+                sl(0.2)
                 
-        #         #set the current
-        #         self.loadslammer.maximize()
-        #         self.loadslammer.adjust_test_current(current)
-        #         self.loadslammer.slam()
-        #         output_status(f"Setting current to {current}A for VID {vid_mV}mV")
-        #         sl(0.1)
-        #         self.loadslammer.minimize()
+                #set the current
+                self.loadslammer.maximize()
+                self.loadslammer.adjust_test_current(current)
+                self.loadslammer.slam()
+                output_status(f"Setting current to {current}A for VID {vid_mV}mV")
+                sl(0.1)
+                self.loadslammer.minimize()
 
-        #         #get the stable voltage measurement
-        #         is_light_load = (float(current) <= 0.01)
-        #         v_mean = self.scope.measure_stable_voltage(vid_mV, is_light_load)
-        #         Output_data["Spec_calibration"]["VID voltage"][vid_mV][current]["measured_vout"] = v_mean
+                #get the stable voltage measurement
+                is_light_load = (float(current) <= 0.01)
+                v_mean = self.scope.measure_stable_voltage(vid_mV, is_light_load)
+                Output_data["Spec_calibration"]["VID voltage"][vid_mV][current]["measured_vout"] = v_mean
                 
-        #         # Add measurement quality indicators
-        #         if is_light_load:
-        #             expected_v = float(vid_mV)/1000
-        #             deviation_pct = abs(v_mean - expected_v) / expected_v * 100
-        #             Output_data["Spec_calibration"]["VID voltage"][vid_mV][current]["measurement_quality"] = {
-        #                 "deviation_percent": round(deviation_pct, 2),
-        #                 "is_within_spec": deviation_pct <= 5.0  # 5% tolerance
-        #             }
+                # Add measurement quality indicators
+                if is_light_load:
+                    expected_v = float(vid_mV)/1000
+                    deviation_pct = abs(v_mean - expected_v) / expected_v * 100
+                    Output_data["Spec_calibration"]["VID voltage"][vid_mV][current]["measurement_quality"] = {
+                        "deviation_percent": round(deviation_pct, 2),
+                        "is_within_spec": deviation_pct <= 5.0  # 5% tolerance
+                    }
                 
-        #         self.loadslammer.maximize()
-        #         self.loadslammer.stop()
-        #         self.loadslammer.minimize()
-        #         v_mean = None
+                self.loadslammer.maximize()
+                self.loadslammer.stop()
+                self.loadslammer.minimize()
+                v_mean = None
         
         self.scope.clear_all_measurements()
         # #run the VOTF test
@@ -205,7 +205,7 @@ class VOTF():
         VOTF_coordinate=self.excel_result_coordinate[self.test_key]["VOTF"]
         Calibration_data = data.get("Spec_calibration", {}).get("VID voltage", {})
         VOTF_data = data.get("VOTF_test", {}).get("Test Case", {})
-
+        
         #caibration data
         
         for vid_mV, currents in Calibration_data.items():
@@ -272,6 +272,7 @@ class VOTF():
         time_date = ir.get_date_time_string()
         output_path = os.path.join(output_dir, "{}_{}.xlsx".format(self.parameters["raw_file_name"],time_date))  # change filename if needed
         self.workbook.save(output_path)
+        output_status("Test Completed.Result stored in {}".format(output_path))
                     
         
 

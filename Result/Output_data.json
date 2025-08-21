@@ -1,124 +1,259 @@
 {
     "Spec_calibration": {
-        "VID voltage": {
-            "550": {
-                "0.01": {
-                    "measured_vout": 9.91e+37
-                },
-                "87.5": {
-                    "measured_vout": 9.91e+37
-                },
-                "175": {
-                    "measured_vout": 9.91e+37
-                }
-            },
-            "900": {
-                "0.01": {
-                    "measured_vout": 9.91e+37
-                },
-                "87.5": {
-                    "measured_vout": 9.91e+37
-                },
-                "175": {
-                    "measured_vout": 9.91e+37
-                }
-            },
-            "1300": {
-                "0.01": {
-                    "measured_vout": 0.68
-                },
-                "87.5": {
-                    "measured_vout": 0.679
-                },
-                "175": {
-                    "measured_vout": 0.681
-                }
-            },
-            "1500": {
-                "0.01": {
-                    "measured_vout": 0.785
-                },
-                "87.5": {
-                    "measured_vout": 0.782
-                },
-                "175": {
-                    "measured_vout": 0.783
-                }
-            }
-        }
+        "VID voltage": {}
     },
     "VOTF_test": {
         "Test Case": {
             "1": {
                 "measured data": {
-                    "Picture 1": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_1_Picture_1_Slew_rate_capture.png",
-                    "Picture 2": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_1_Picture_2_VOTFC_Time_capture.png",
-                    "Picture 3": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_1_Picture_3_Vmin@VOTF_capture.png",
-                    "Picture 4": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_1_Picture_4_VOTF_Down_Slop_Capture.png"
+                    "Picture 1": {
+                        "filepath": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_1_Picture_1_Slew_rate_capture.png",
+                        "rise_time": 82.931,
+                        "time_cursor_A(us)": 42.369,
+                        "time_cursor_B(us)": -41.78,
+                        "measure 80% VID up": 832.061,
+                        "Measure 20% VID up": 619.547,
+                        "voltage_delta": 212.514,
+                        "Change in time(us)": 84.149,
+                        "Vmax@VOTF(mV)": 910.969
+                    },
+                    "Picture 2": {
+                        "filepath": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_1_Picture_2_VOTFC_Time_capture.png",
+                        "VOTF Time (us)": 128.345
+                    },
+                    "Picture 3": {
+                        "filepath": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_1_Picture_3_Vmin@VOTF_capture.png",
+                        "Vmin@VOTF(mV)": 878.933
+                    },
+                    "Picture 4": {
+                        "filepath": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_1_Picture_4_VOTF_Down_Slop_Capture.png",
+                        "measure target  VID(mV))": 556.749,
+                        "measure target VID -20mV(mV)": 549.013
+                    }
                 }
             },
             "2": {
                 "measured data": {
-                    "Picture 1": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_2_Picture_1_Slew_rate_capture.png",
-                    "Picture 2": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_2_Picture_2_VOTFC_Time_capture.png",
-                    "Picture 3": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_2_Picture_3_Vmin@VOTF_capture.png",
-                    "Picture 4": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_2_Picture_4_VOTF_Down_Slop_Capture.png"
+                    "Picture 1": {
+                        "filepath": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_2_Picture_1_Slew_rate_capture.png",
+                        "rise_time": 9.910000000000001e+43,
+                        "time_cursor_A(us)": 62.994,
+                        "time_cursor_B(us)": -65.351,
+                        "measure 80% VID up": 906.749,
+                        "Measure 20% VID up": 899.013,
+                        "voltage_delta": 7.73599999999999,
+                        "Change in time(us)": 128.345,
+                        "Vmax@VOTF(mV)": 1313.062
+                    },
+                    "Picture 2": {
+                        "filepath": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_2_Picture_2_VOTFC_Time_capture.png",
+                        "VOTF Time (us)": 128.345
+                    },
+                    "Picture 3": {
+                        "filepath": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_2_Picture_3_Vmin@VOTF_capture.png",
+                        "Vmin@VOTF(mV)": 899.013
+                    },
+                    "Picture 4": {
+                        "filepath": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_2_Picture_4_VOTF_Down_Slop_Capture.png",
+                        "measure target  VID(mV))": 906.749,
+                        "measure target VID -20mV(mV)": 899.013
+                    }
                 }
             },
             "3": {
                 "measured data": {
-                    "Picture 1": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_3_Picture_1_Slew_rate_capture.png",
-                    "Picture 2": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_3_Picture_2_VOTFC_Time_capture.png",
-                    "Picture 3": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_3_Picture_3_Vmin@VOTF_capture.png",
-                    "Picture 4": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_3_Picture_4_VOTF_Down_Slop_Capture.png"
+                    "Picture 1": {
+                        "filepath": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_3_Picture_1_Slew_rate_capture.png",
+                        "rise_time": 142.865,
+                        "time_cursor_A(us)": 62.994,
+                        "time_cursor_B(us)": -65.351,
+                        "measure 80% VID up": 906.749,
+                        "Measure 20% VID up": 899.013,
+                        "voltage_delta": 7.73599999999999,
+                        "Change in time(us)": 128.345,
+                        "Vmax@VOTF(mV)": 1512.688
+                    },
+                    "Picture 2": {
+                        "filepath": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_3_Picture_2_VOTFC_Time_capture.png",
+                        "VOTF Time (us)": 128.345
+                    },
+                    "Picture 3": {
+                        "filepath": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_3_Picture_3_Vmin@VOTF_capture.png",
+                        "Vmin@VOTF(mV)": 899.013
+                    },
+                    "Picture 4": {
+                        "filepath": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_3_Picture_4_VOTF_Down_Slop_Capture.png",
+                        "measure target  VID(mV))": 906.749,
+                        "measure target VID -20mV(mV)": 899.013
+                    }
                 }
             },
             "4": {
                 "measured data": {
-                    "Picture 1": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_4_Picture_1_Slew_rate_capture.png",
-                    "Picture 2": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_4_Picture_2_VOTFC_Time_capture.png",
-                    "Picture 3": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_4_Picture_3_Vmin@VOTF_capture.png",
-                    "Picture 4": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_4_Picture_4_VOTF_Down_Slop_Capture.png"
+                    "Picture 1": {
+                        "filepath": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_4_Picture_1_Slew_rate_capture.png",
+                        "rise_time": 81.873,
+                        "time_cursor_A(us)": 62.994,
+                        "time_cursor_B(us)": -65.351,
+                        "measure 80% VID up": 556.749,
+                        "Measure 20% VID up": 549.013,
+                        "voltage_delta": 7.73599999999999,
+                        "Change in time(us)": 128.345,
+                        "Vmax@VOTF(mV)": 884.938
+                    },
+                    "Picture 2": {
+                        "filepath": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_4_Picture_2_VOTFC_Time_capture.png",
+                        "VOTF Time (us)": 128.345
+                    },
+                    "Picture 3": {
+                        "filepath": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_4_Picture_3_Vmin@VOTF_capture.png",
+                        "Vmin@VOTF(mV)": 549.013
+                    },
+                    "Picture 4": {
+                        "filepath": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_4_Picture_4_VOTF_Down_Slop_Capture.png",
+                        "measure target  VID(mV))": 556.749,
+                        "measure target VID -20mV(mV)": 549.013
+                    }
                 }
             },
             "5": {
                 "measured data": {
-                    "Picture 1": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_5_Picture_1_Slew_rate_capture.png",
-                    "Picture 2": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_5_Picture_2_VOTFC_Time_capture.png",
-                    "Picture 3": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_5_Picture_3_Vmin@VOTF_capture.png",
-                    "Picture 4": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_5_Picture_4_VOTF_Down_Slop_Capture.png"
+                    "Picture 1": {
+                        "filepath": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_5_Picture_1_Slew_rate_capture.png",
+                        "rise_time": 95.689,
+                        "time_cursor_A(us)": 62.994,
+                        "time_cursor_B(us)": -65.351,
+                        "measure 80% VID up": 906.749,
+                        "Measure 20% VID up": 899.013,
+                        "voltage_delta": 7.73599999999999,
+                        "Change in time(us)": 128.345,
+                        "Vmax@VOTF(mV)": 1286.344
+                    },
+                    "Picture 2": {
+                        "filepath": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_5_Picture_2_VOTFC_Time_capture.png",
+                        "VOTF Time (us)": 128.345
+                    },
+                    "Picture 3": {
+                        "filepath": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_5_Picture_3_Vmin@VOTF_capture.png",
+                        "Vmin@VOTF(mV)": 899.013
+                    },
+                    "Picture 4": {
+                        "filepath": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_5_Picture_4_VOTF_Down_Slop_Capture.png",
+                        "measure target  VID(mV))": 906.749,
+                        "measure target VID -20mV(mV)": 899.013
+                    }
                 }
             },
             "6": {
                 "measured data": {
-                    "Picture 1": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_6_Picture_1_Slew_rate_capture.png",
-                    "Picture 2": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_6_Picture_2_VOTFC_Time_capture.png",
-                    "Picture 3": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_6_Picture_3_Vmin@VOTF_capture.png",
-                    "Picture 4": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_6_Picture_4_VOTF_Down_Slop_Capture.png"
+                    "Picture 1": {
+                        "filepath": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_6_Picture_1_Slew_rate_capture.png",
+                        "rise_time": 142.118,
+                        "time_cursor_A(us)": 62.994,
+                        "time_cursor_B(us)": -65.351,
+                        "measure 80% VID up": 906.749,
+                        "Measure 20% VID up": 899.013,
+                        "voltage_delta": 7.73599999999999,
+                        "Change in time(us)": 128.345,
+                        "Vmax@VOTF(mV)": 1488.0
+                    },
+                    "Picture 2": {
+                        "filepath": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_6_Picture_2_VOTFC_Time_capture.png",
+                        "VOTF Time (us)": 128.345
+                    },
+                    "Picture 3": {
+                        "filepath": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_6_Picture_3_Vmin@VOTF_capture.png",
+                        "Vmin@VOTF(mV)": 899.013
+                    },
+                    "Picture 4": {
+                        "filepath": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_6_Picture_4_VOTF_Down_Slop_Capture.png",
+                        "measure target  VID(mV))": 906.749,
+                        "measure target VID -20mV(mV)": 899.013
+                    }
                 }
             },
             "7": {
                 "measured data": {
-                    "Picture 1": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_7_Picture_1_Slew_rate_capture.png",
-                    "Picture 2": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_7_Picture_2_VOTFC_Time_capture.png",
-                    "Picture 3": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_7_Picture_3_Vmin@VOTF_capture.png",
-                    "Picture 4": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_7_Picture_4_VOTF_Down_Slop_Capture.png"
+                    "Picture 1": {
+                        "filepath": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_7_Picture_1_Slew_rate_capture.png",
+                        "rise_time": 81.679,
+                        "time_cursor_A(us)": 62.994,
+                        "time_cursor_B(us)": -65.351,
+                        "measure 80% VID up": 556.749,
+                        "Measure 20% VID up": 549.013,
+                        "voltage_delta": 7.73599999999999,
+                        "Change in time(us)": 128.345,
+                        "Vmax@VOTF(mV)": 857.906
+                    },
+                    "Picture 2": {
+                        "filepath": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_7_Picture_2_VOTFC_Time_capture.png",
+                        "VOTF Time (us)": 128.345
+                    },
+                    "Picture 3": {
+                        "filepath": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_7_Picture_3_Vmin@VOTF_capture.png",
+                        "Vmin@VOTF(mV)": 549.013
+                    },
+                    "Picture 4": {
+                        "filepath": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_7_Picture_4_VOTF_Down_Slop_Capture.png",
+                        "measure target  VID(mV))": 556.749,
+                        "measure target VID -20mV(mV)": 549.013
+                    }
                 }
             },
             "8": {
                 "measured data": {
-                    "Picture 1": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_8_Picture_1_Slew_rate_capture.png",
-                    "Picture 2": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_8_Picture_2_VOTFC_Time_capture.png",
-                    "Picture 3": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_8_Picture_3_Vmin@VOTF_capture.png",
-                    "Picture 4": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_8_Picture_4_VOTF_Down_Slop_Capture.png"
+                    "Picture 1": {
+                        "filepath": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_8_Picture_1_Slew_rate_capture.png",
+                        "rise_time": 96.289,
+                        "time_cursor_A(us)": 62.994,
+                        "time_cursor_B(us)": -65.351,
+                        "measure 80% VID up": 906.749,
+                        "Measure 20% VID up": 899.013,
+                        "voltage_delta": 7.73599999999999,
+                        "Change in time(us)": 128.345,
+                        "Vmax@VOTF(mV)": 1263.062
+                    },
+                    "Picture 2": {
+                        "filepath": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_8_Picture_2_VOTFC_Time_capture.png",
+                        "VOTF Time (us)": 128.345
+                    },
+                    "Picture 3": {
+                        "filepath": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_8_Picture_3_Vmin@VOTF_capture.png",
+                        "Vmin@VOTF(mV)": 899.013
+                    },
+                    "Picture 4": {
+                        "filepath": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_8_Picture_4_VOTF_Down_Slop_Capture.png",
+                        "measure target  VID(mV))": 906.749,
+                        "measure target VID -20mV(mV)": 899.013
+                    }
                 }
             },
             "9": {
                 "measured data": {
-                    "Picture 1": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_9_Picture_1_Slew_rate_capture.png",
-                    "Picture 2": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_9_Picture_2_VOTFC_Time_capture.png",
-                    "Picture 3": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_9_Picture_3_Vmin@VOTF_capture.png",
-                    "Picture 4": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_9_Picture_4_VOTF_Down_Slop_Capture.png"
+                    "Picture 1": {
+                        "filepath": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_9_Picture_1_Slew_rate_capture.png",
+                        "rise_time": 141.819,
+                        "time_cursor_A(us)": 62.994,
+                        "time_cursor_B(us)": -65.351,
+                        "measure 80% VID up": 906.749,
+                        "Measure 20% VID up": 899.013,
+                        "voltage_delta": 7.73599999999999,
+                        "Change in time(us)": 128.345,
+                        "Vmax@VOTF(mV)": 1462.156
+                    },
+                    "Picture 2": {
+                        "filepath": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_9_Picture_2_VOTFC_Time_capture.png",
+                        "VOTF Time (us)": 128.345
+                    },
+                    "Picture 3": {
+                        "filepath": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_9_Picture_3_Vmin@VOTF_capture.png",
+                        "Vmin@VOTF(mV)": 899.013
+                    },
+                    "Picture 4": {
+                        "filepath": "C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\VDDCR_CPU0\\Case_9_Picture_4_VOTF_Down_Slop_Capture.png",
+                        "measure target  VID(mV))": 906.749,
+                        "measure target VID -20mV(mV)": 899.013
+                    }
                 }
             }
         }
