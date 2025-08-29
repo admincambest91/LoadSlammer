@@ -259,8 +259,15 @@ class TektronixMSO46B:
         dict = {t.lower(): i+1 for i, t in enumerate(scope_measurement_key)}
         self.inst.write(":MEASure:MEAS{}:VALue?".format(dict["mean"]))
         time.sleep(0.5)
-        raw = float(self.inst.read().strip())
-        time.sleep(0.5)
+        try:
+            raw = self.inst.read().strip()
+            raw=float(raw)
+            time.sleep(0.5)
+
+        except ValueError:
+            time.sleep(0.5)
+            raw = float(self.inst.read().strip())
+            time.sleep(0.5)
         try:
             #v = round(float(self.inst.query("MEASUREMENT:MEAS{}:VALUE?".format(dict["mean"])).strip()), 3)
             v = round(raw, 3)
