@@ -90,6 +90,15 @@ class TektronixMSO46B:
             self.inst.write(f"MEASUrement:MEAS{idx}:STATE ON")
             time.sleep(0.5)
 
+    def rise_time_cursor(self):
+        self.inst.write("*CLS")  # Clear the status
+        time.sleep(0.5)
+        self.inst.write("MEASUrement:REFLevels:PERCent:RISEHigh 80")
+        time.sleep(0.5)
+        self.inst.write("*CLS")
+        time.sleep(0.5)
+        self.inst.write("MEASUrement:REFLevels:PERCent:RISELow 20")
+        time.sleep(0.5)     
     def offset(self, channel=1, offset=0.0):
         """
         Set the vertical offset for a specified channel.
@@ -261,6 +270,7 @@ class TektronixMSO46B:
         time.sleep(0.5)
         try:
             raw = self.inst.read().strip()
+            time.sleep(0.5)
             raw=float(raw)
             time.sleep(0.5)
 

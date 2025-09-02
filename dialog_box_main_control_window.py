@@ -107,6 +107,8 @@ class ScopePromptUI:
             time.sleep(0.5)  
             self.scope.enable_cursor()
             time.sleep(0.5)
+            self.scope.rise_time_cursor()
+            time.sleep(0.5)
             
         elif "Picture_2" in pic_name:
             self.scope.clear_all_measurements()
@@ -311,7 +313,7 @@ class ScopePromptUI:
                 #tA tB in us. 
                 # vA vB in mV
                 tA,tB, vA,vB = self.scope.get_all_cursor_positions()
-                time.sleep(0.5)
+                time.sleep(0.1)
                 self.output_data["VOTF_test"]["Test Case"]["{}".format(self.test_case_num)]["measured data"][
                     "Picture 2"] = {
                         "filepath": filepath,
@@ -324,7 +326,7 @@ class ScopePromptUI:
                 #tA tB in us. 
                 # vA vB in mV
                 tA,tB, vA,vB = self.scope.get_all_cursor_positions()
-                time.sleep(0.5)
+                time.sleep(0.1)
                 self.output_data["VOTF_test"]["Test Case"]["{}".format(self.test_case_num)]["measured data"][
                     "Picture 3"] = {
                         "filepath": filepath,
@@ -337,7 +339,7 @@ class ScopePromptUI:
                 #tA tB in us. 
                 # vA vB in mV
                 tA,tB, vA,vB = self.scope.get_all_cursor_positions()
-                time.sleep(0.5)
+                time.sleep(0.1)
                 self.output_data["VOTF_test"]["Test Case"]["{}".format(self.test_case_num)]["measured data"][
                     "Picture 4"] = {
                         "filepath": filepath,
