@@ -152,6 +152,17 @@ def get_date_time_string():
         return now.strftime("DATE_%-d_%-m_%Y_TIME_%-I_%M_%p")
 
 
+def filepath_creation(test_key,test_case, edge):
+    
+    # Create the folder structure: Result/PSI_transition/rail_name
+    folder = os.path.join("C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result", "PSI_transition", test_key)
+    # Create all directories in the path if they don't exist
+    os.makedirs(folder, exist_ok=True)
+
+    filename = f"Case_{test_case}_{edge}.png"
+    filepath = os.path.join(folder, filename)
+
+    return filepath
 
 def select_file(test_key):
     root = tk.Tk()

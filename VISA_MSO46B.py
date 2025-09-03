@@ -73,6 +73,25 @@ class TektronixMSO46B:
         if level is not None:
             self.inst.write(f"TRIGger:A:LEVel:CH1 {level}")  # Trigger level fileciteturn1file13L41-L46
 
+    def take_screenshot(self, file_path: str):
+        self.inst.write("HARDCopy:INKSaver ON")
+        self.inst.write("HARDCopy:FORMat PNG")
+        self.inst.write("HARDCopy:PORT FILE")
+        self.inst.write("HARDCopy:LAYout FULL")
+        self.inst.write("HARDCopy:PREView OFF")
+        self.inst.write("HARDCopy STARt")
+
+        self.inst.timeout = 20000  # 20 seconds
+        self.inst.write('SAVE:IMAGE "C:/Temp.png"')
+        self.inst.query('*OPC?')
+        self.inst.write('FILESystem:READFile "C:/Temp.png"')
+        time.sleep(0.2)  # Wait for file to be ready
+        raw_data = self.inst.read_raw()
+        with open(file_path, 'wb') as f:
+            f.write(raw_data)
+        self.inst.write('FILESystem:DELEte "C:/Temp.png"')
+
+
     def enable_measurements(self, types):
     # 1) Delete all existing measurements
         self.inst.write("MEASUrement:DELETEALL") 
@@ -363,7 +382,10 @@ class TektronixMSO46B:
         
         return avg_voltage
 
-
+    def clear_screen(self):
+        self.inst.write("CLEAR")
+        time.sleep(0.2)
+        
     def clear_all_measurements(self):
         """Clear all measurements and measurement buffer."""
         # Clear the device status
