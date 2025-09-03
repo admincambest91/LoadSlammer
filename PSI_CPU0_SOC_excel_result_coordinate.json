@@ -1,0 +1,98 @@
+{
+  "VDDCR_CPU0": {
+    "PSI Validation": {
+      "Test Case": {
+        "1": {
+          "rising_edge": {
+            "row_start": 25,
+            "row_end": 52,
+            "col_start": "B",
+            "col_end": "F"
+          },
+          "falling_edge": {
+            "row_start": 25,
+            "row_end": 52,
+            "col_start": "G",
+            "col_end": "L"
+          }
+        },
+        "2": {
+          "rising_edge": {
+            "row_start": 54,
+            "row_end": 81,
+            "col_start": "B",
+            "col_end": "F"
+          },
+          "falling_edge": {
+            "row_start": 54,
+            "row_end": 81,
+            "col_start": "G",
+            "col_end": "L"
+          }
+        },
+        "3": {
+          "rising_edge": {
+            "row_start": 83,
+            "row_end": 110,
+            "col_start": "B",
+            "col_end": "F"
+          },
+          "falling_edge": {
+            "row_start": 83,
+            "row_end": 110,
+            "col_start": "G",
+            "col_end": "L"
+          }
+        },
+        "4": {
+          "rising_edge": {
+            "row_start": 37,
+            "row_end": 68,
+            "col_start": "B",
+            "col_end": "F"
+          },
+          "falling_edge": {
+            "row_start": 112,
+            "row_end": 139,
+            "col_start": "G",
+            "col_end": "L"
+          }
+        }
+      }
+    }
+  },
+  "VDDCR_SOC": {
+    "PSI Validation": {
+      "Test Case": {
+        "1": {
+          "rising_edge": {
+            "row_start": 141,
+            "row_end": 168,
+            "col_start": "B",
+            "col_end": "F"
+          },
+          "falling_edge": {
+            "row_start": 141,
+            "row_end": 168,
+            "col_start": "G",
+            "col_end": "L"
+          }
+        },
+        "2": {
+          "rising_edge": {
+            "row_start": 170,
+            "row_end": 197,
+            "col_start": "B",
+            "col_end": "F"
+          },
+          "falling_edge": {
+            "row_start": 170,
+            "row_end": 197,
+            "col_start": "G",
+            "col_end": "L"
+          }
+        }
+      }
+    }
+  }
+}
