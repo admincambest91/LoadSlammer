@@ -1,0 +1,110 @@
+{
+  "VDDCR_CPU1": {
+    "PSI Validation": {
+      "Test Case": {
+        "1": {
+          "rising_edge": { 
+            "Old_PSI": 7, 
+            "New_PSI": 7, 
+            "IDD Set(A)": 88, 
+            "Old_VID (mV)": 550, 
+            "Target_VID (mV)": 1200 
+          },
+          "falling_edge": { 
+            "Old_PSI": 7, 
+            "New_PSI": 7, 
+            "IDD Set(A)": 88, 
+            "Old_VID (mV)": 1200, 
+            "Target_VID (mV)": 550 
+          }
+        },
+        "2": {
+          "rising_edge": { 
+            "Old_PSI": 7, 
+            "New_PSI": 7, 
+            "IDD Set(A)": 35, 
+            "Old_VID (mV)": 550, 
+            "Target_VID (mV)": 1200 
+          },
+          "falling_edge": { 
+            "Old_PSI": 0, 
+            "New_PSI": 6, 
+            "IDD Set(A)": 35, 
+            "Old_VID (mV)": 1200, 
+            "Target_VID (mV)": 1200 
+          }
+        },
+        "3": {
+          "rising_edge": { 
+            "Old_PSI": 7, 
+            "New_PSI": 7, 
+            "IDD Set(A)": 20, 
+            "Old_VID (mV)": 550, 
+            "Target_VID (mV)": 1200 
+          },
+          "falling_edge": { 
+            "Old_PSI": 7, 
+            "New_PSI": 6, 
+            "IDD Set(A)": 20, 
+            "Old_VID (mV)": 1200, 
+            "Target_VID (mV)": 1200 
+          }
+        },
+        "4": {
+          "rising_edge": { 
+            "Old_PSI": 6, 
+            "New_PSI": 0, 
+            "IDD Set(A)": 44, 
+            "Old_VID (mV)": 1200, 
+            "Target_VID (mV)": 1200 
+          },
+          "falling_edge": { 
+            "Old_PSI": 7, 
+            "New_PSI": 7, 
+            "IDD Set(A)": 44, 
+            "Old_VID (mV)": 1200, 
+            "Target_VID (mV)": 550 
+          }
+        }
+      }
+    }
+  },
+  "VDDIO": {
+    "PSI Validation": {
+      "Test Case": {
+        "1": {
+          "rising_edge": { 
+            "Old_PSI": 7, 
+            "New_PSI": 7, 
+            "IDD Set(A)": 60, 
+            "Old_VID (mV)": 900, 
+            "Target_VID (mV)": 1200 
+          },
+          "falling_edge": { 
+            "Old_PSI": 7, 
+            "New_PSI": 7, 
+            "IDD Set(A)": 60, 
+            "Old_VID (mV)": 1200, 
+            "Target_VID (mV)": 900 
+          }
+        },
+        "2": {
+          "rising_edge": { 
+            "Old_PSI": 7, 
+            "New_PSI": 7, 
+            "IDD Set(A)": 20, 
+            "Old_VID (mV)": 900, 
+            "Target_VID (mV)": 1200 
+          },
+          "falling_edge": { 
+            "Old_PSI": 7, 
+            "New_PSI": 7, 
+            "IDD Set(A)": 20, 
+            "Old_VID (mV)": 1200, 
+            "Target_VID (mV)": 900 
+          }
+        }
+      }
+    }
+  }
+}
