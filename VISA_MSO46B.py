@@ -85,7 +85,7 @@ class TektronixMSO46B:
         self.inst.write('SAVE:IMAGE "C:/Temp.png"')
         self.inst.query('*OPC?')
         self.inst.write('FILESystem:READFile "C:/Temp.png"')
-        time.sleep(0.2)  # Wait for file to be ready
+        time.sleep(0.4)  # Wait for file to be ready
         raw_data = self.inst.read_raw()
         with open(file_path, 'wb') as f:
             f.write(raw_data)
@@ -345,6 +345,11 @@ class TektronixMSO46B:
 
         return round(v, 3)
 
+    def operation_complete(self):
+        """Wait for the oscilloscope to complete all operations."""
+        state=self.inst.query("*OPC?")  # Clear the status
+        time.sleep(0.5)
+        return state.strip()
     def measure_stable_voltage(self, vid_mV, is_light_load=False):
         """
         Take multiple measurements and return stable average with error checking

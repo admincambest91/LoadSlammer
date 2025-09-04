@@ -75,6 +75,7 @@ class PSI_Transition():
 
             #dict to store the results for  test case
             Output_data["PSI_Transition"]["Test Case"]["{}".format(test_id)]={"measured data":None}
+            Output_data["PSI_Transition"]["Test Case"]["{}".format(test_id)]["measured data"]={"Rising_edge":{},"Falling_edge":{}}
             #grab the value for the rising and falling edge test cases
             rising_edge=test_data["rising_edge"]
             falling_edge=test_data["falling_edge"]
@@ -113,14 +114,12 @@ class PSI_Transition():
 
                     self.SVI3.key_in_value('VID','{}mV'.format(rising_edge["Target_VID (mV)"]))
                     self.SVI3.click('Set_VID')
-                    
-                    sl(1)
+                    output_status("sleep for 10 seconds to wait for the voltage to settle")
+                    sl(10)
                     self.SVI3.minimize()
-                    maximum=self.scope.measure_maximum()
-                    while maximum>2000:
-                        maximum=self.scope.measure_maximum()
-                        sl(0.1)
+                    
                     filepath=ir.filepath_creation(self.test_key,test_id,"Rising_edge")
+                    print(f"saving screenshot to {filepath}")
                     self.scope.take_screenshot(filepath)
                     sl(1)
 
@@ -138,14 +137,10 @@ class PSI_Transition():
 
                     self.SVI3.key_in_value('VID','{}mV'.format(falling_edge["Target_VID (mV)"]))
                     self.SVI3.click('Set_VID')
-                    sl(1)
+                    output_status("sleep for 10 seconds to wait for the voltage to settle")
+                    sl(10)
                     self.SVI3.minimize()
 
-                    self.SVI3.minimize()
-                    maximum=self.scope.measure_maximum()
-                    while maximum>2000:
-                        maximum=self.scope.measure_maximum()
-                        sl(0.1)
                     filepath=ir.filepath_creation(self.test_key,test_id,"Falling_edge")
                     self.scope.take_screenshot(filepath)
                     sl(1)
