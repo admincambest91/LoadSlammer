@@ -74,7 +74,8 @@ class TektronixMSO46B:
             self.inst.write(f"TRIGger:A:LEVel:CH1 {level}")  # Trigger level fileciteturn1file13L41-L46
 
     def take_screenshot(self, file_path: str):
-        self.inst.write("HARDCopy:INKSaver ON")
+        self.inst.write('*OPC?') #
+        self.inst.write("HARDCopy:INKSfaver ON")
         self.inst.write("HARDCopy:FORMat PNG")
         self.inst.write("HARDCopy:PORT FILE")
         self.inst.write("HARDCopy:LAYout FULL")

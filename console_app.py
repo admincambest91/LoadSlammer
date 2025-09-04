@@ -3,7 +3,10 @@ import builtins
 import sys
 import json
 from enum import Enum
+from LS_message_display_box import NotificationWindow
 
+
+notification = NotificationWindow()
 
 def output(message):
     return builtins.print(message, flush=True, file=sys.stdout)
@@ -17,9 +20,15 @@ def output_err(message):
 def output_axes(x_axis, y_axis):
     return output("@axes " + x_axis + ", " + y_axis)
 
-
 def output_status(newStatus, *args, **kargs):
-    return output("@status {}".format(newStatus.format(*args, **kargs)))
+    formatted_message = newStatus.format(*args, **kargs)
+    output("@status {}".format(formatted_message))
+    # Add notification display
+    notification.show_notification(formatted_message)
+    return formatted_message
+
+# def output_status(newStatus, *args, **kargs):
+#     return output("@status {}".format(newStatus.format(*args, **kargs)))
 
 
 def output_progress(progress):

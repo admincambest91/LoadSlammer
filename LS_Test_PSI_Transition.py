@@ -114,12 +114,12 @@ class PSI_Transition():
 
                     self.SVI3.key_in_value('VID','{}mV'.format(rising_edge["Target_VID (mV)"]))
                     self.SVI3.click('Set_VID')
-                    output_status("sleep for 10 seconds to wait for the voltage to settle")
-                    sl(10)
+                    # output_status("sleep for 10 seconds to wait for the voltage to settle")
+                    # sl(10)
                     self.SVI3.minimize()
                     
                     filepath=ir.filepath_creation(self.test_key,test_id,"Rising_edge")
-                    print(f"saving screenshot to {filepath}")
+                    output_status(f"saving screenshot to {filepath}")
                     self.scope.take_screenshot(filepath)
                     sl(1)
 
@@ -137,82 +137,191 @@ class PSI_Transition():
 
                     self.SVI3.key_in_value('VID','{}mV'.format(falling_edge["Target_VID (mV)"]))
                     self.SVI3.click('Set_VID')
-                    output_status("sleep for 10 seconds to wait for the voltage to settle")
-                    sl(10)
+                    # output_status("sleep for 10 seconds to wait for the voltage to settle")
+                    # sl(10)
                     self.SVI3.minimize()
 
                     filepath=ir.filepath_creation(self.test_key,test_id,"Falling_edge")
                     self.scope.take_screenshot(filepath)
                     sl(1)
 
+                if test_id =="2":
+                    self.scope.clear_screen()
+                    #run rising edge first
+                    #set scope offset following Old VID
+                    self.scope.offset(channel=1, offset=rising_edge["Old_VID (mV)"]/1000)
+                    sl(0.1)
 
-
-
-                    
-                    
-
-
-
-
-
-            if self.test_key == "VDDCR_CPU0" or self.test_key == "VDDCR_CPU1":
-                if test_id != "4":
+                    #set the old PSI and VID in SVI3
                     self.SVI3.maximize()
                     sl(0.1)
-                    self.SVI3.key_in_value('VID','{}mV'.format(test_data["Old_VID (mV)"]))
+                    self.SVI3.key_in_value('VID','{}mV'.format(rising_edge["Old_VID (mV)"]))
                     self.SVI3.click('Set_VID')
+                    sl(2)
+
+                    #set scope trigger 
+                    self.scope.set_trigger_level(rising_edge["Old_VID (mV)"]/1000, rising_edge["Target_VID (mV)"]/1000, slope="RISE")
+                    sl(0.1)
+
+
+                    self.SVI3.key_in_value('PSI','{}'.format(rising_edge["Old_PSI"]))
+                    self.SVI3.click('Set_PSI')
+                    sl(1)
+
+                    self.SVI3.key_in_value('VID','{}mV'.format(rising_edge["Target_VID (mV)"]))
+                    self.SVI3.click('Set_VID')
+                    # output_status("sleep for 10 seconds to wait for the voltage to settle")
+                    # sl(10)
                     self.SVI3.minimize()
-                elif test_id == "4":
-                    #set the PSI mode in SVI3
+                    
+                    filepath=ir.filepath_creation(self.test_key,test_id,"Rising_edge")
+                    output_status(f"saving screenshot to {filepath}")
+                    self.scope.take_screenshot(filepath)
+                    sl(1)
+
+                    #capture for the falling edge
+                    self.scope.clear_screen()
+                    #set scope trigger 
+                    self.scope.set_trigger_level(rising_edge["Old_VID (mV)"]/1000, rising_edge["Target_VID (mV)"]/1000, slope="FALL")
+                    sl(0.1)
+
                     self.SVI3.maximize()
+                    self.SVI3.key_in_value('PSI','{}'.format(falling_edge["Old_PSI"]))
+                    self.SVI3.click('Set_PSI')
+                    sl(1)
+
+                    self.SVI3.key_in_value('VID','{}mV'.format(falling_edge["Old_VID (mV)"]))
+                    self.SVI3.click('Set_VID')
+                    # output_status("sleep for 10 seconds to wait for the voltage to settle")
+                    # sl(10)
+
+                    self.SVI3.key_in_value('PSI','{}'.format(falling_edge["New_PSI"]))
+                    self.SVI3.click('Set_PSI')
+                    sl(1)
+
+                    self.SVI3.minimize()
+
+                    filepath=ir.filepath_creation(self.test_key,test_id,"Falling_edge")
+                    self.scope.take_screenshot(filepath)
+                    sl(1)
+
+                if test_id =="3":
+                    self.scope.clear_screen()
+                    #run rising edge first
+                    #set scope offset following Old VID
+                    self.scope.offset(channel=1, offset=rising_edge["Old_VID (mV)"]/1000)
+                    sl(0.1)
+
+                    #set the old PSI and VID in SVI3
+                    self.SVI3.maximize()
+                    sl(0.1)
+                    self.SVI3.key_in_value('VID','{}mV'.format(rising_edge["Old_VID (mV)"]))
+                    self.SVI3.click('Set_VID')
+                    sl(2)
+
+                    #set scope trigger 
+                    self.scope.set_trigger_level(rising_edge["Old_VID (mV)"]/1000, rising_edge["Target_VID (mV)"]/1000, slope="RISE")
+                    sl(0.1)
+
+
+                    self.SVI3.key_in_value('PSI','{}'.format(rising_edge["Old_PSI"]))
+                    self.SVI3.click('Set_PSI')
+                    sl(1)
+
+                    self.SVI3.key_in_value('VID','{}mV'.format(rising_edge["Target_VID (mV)"]))
+                    self.SVI3.click('Set_VID')
+                    # output_status("sleep for 10 seconds to wait for the voltage to settle")
+                    # sl(10)
+                    self.SVI3.minimize()
+                    
+                    filepath=ir.filepath_creation(self.test_key,test_id,"Rising_edge")
+                    (f"saving screenshot to {filepath}")
+                    self.scope.take_screenshot(filepath)
+                    sl(1)
+
+                    #capture for the falling edge
+                    self.scope.clear_screen()
+                    #set scope trigger 
+                    self.scope.set_trigger_level(rising_edge["Old_VID (mV)"]/1000, rising_edge["Target_VID (mV)"]/1000, slope="FALL")
+                    sl(0.1)
+
+                    self.SVI3.maximize()
+                    self.SVI3.key_in_value('PSI','{}'.format(falling_edge["Old_PSI"]))
+                    self.SVI3.click('Set_PSI')
+                    sl(1)
+
+                    self.SVI3.key_in_value('VID','{}mV'.format(falling_edge["Old_VID (mV)"]))
+                    self.SVI3.click('Set_VID')
+                    # output_status("sleep for 10 seconds to wait for the voltage to settle")
+                    # sl(10)
+
+                    self.SVI3.key_in_value('PSI','{}'.format(falling_edge["New_PSI"]))
+                    self.SVI3.click('Set_PSI')
+                    sl(1)
+
+                    self.SVI3.minimize()
+
+                    filepath=ir.filepath_creation(self.test_key,test_id,"Falling_edge")
+                    self.scope.take_screenshot(filepath)
+                    sl(1)
+
+                if test_id =="4":
+
+                    self.scope.clear_screen()
+                    #run rising edge first
+                    #set scope offset following falling edge VID because rising edge VID start at 1.2V.
+                    self.scope.offset(channel=1, offset=falling_edge["Target_VID (mV)"]/1000)
+                    sl(0.1)
+
+                    #set the old PSI and VID in SVI3
+                    self.SVI3.maximize()
+                    sl(0.1)
+
+                    #set scope trigger 
+                    self.scope.set_trigger_level(falling_edge["Target_VID (mV)"]/1000, rising_edge["Target_VID (mV)"]/1000, slope="RISE")
+                    sl(0.1)
+
+
+                    self.SVI3.key_in_value('PSI','{}'.format(rising_edge["Old_PSI"]))
+                    self.SVI3.click('Set_PSI')
+                    sl(1)
+
+                    self.SVI3.key_in_value('VID','{}mV'.format(rising_edge["Target_VID (mV)"]))
+                    self.SVI3.click('Set_VID')
+                    # output_status("sleep for 10 seconds to wait for the voltage to settle")
+                    # sl(10)
+                    self.SVI3.minimize()
+                    
+                    filepath=ir.filepath_creation(self.test_key,test_id,"Rising_edge")
+                    output_status(f"saving screenshot to {filepath}")
+                    self.scope.take_screenshot(filepath)
+                    sl(1)
+
+                    #capture for the falling edge
+                    self.scope.clear_screen()
+                    #set scope trigger 
+                    self.scope.set_trigger_level(rising_edge["Old_VID (mV)"]/1000, rising_edge["Target_VID (mV)"]/1000, slope="FALL")
+                    sl(0.1)
+
+                    self.SVI3.maximize()
+                    self.SVI3.key_in_value('PSI','{}'.format(falling_edge["Old_PSI"]))
+                    self.SVI3.click('Set_PSI')
+                    sl(1)
+
+                    self.SVI3.key_in_value('VID','{}mV'.format(falling_edge["Old_VID (mV)"]))
+                    self.SVI3.click('Set_VID')
+
+                    self.SVI3.key_in_value('VID','{}mV'.format(falling_edge[" Target_VID (mV)"]))
+                    self.SVI3.click('Set_VID')
                     
                     self.SVI3.minimize()
-            
-            
-
-            #set the VID in SVI3
-            
-
-            self.SVI3.minimize()
-
-            #set scope offset following Old VID
-            self.scope.offset(channel=1, offset=test_data["Old_VID (mV)"]/1000)
-            
-            
-
-
-            self.loadslammer.minimize()
-            
-            #build the UI for the test case result capture from scope
-            
-            
-            self.gui.build_ui(test_data["Old_VID (mV)"],test_data["Target_VID (mV)"],int(test_id),Output_data)
-            self.loadslammer.maximize()
-            self.loadslammer.stop()
-            self.loadslammer.minimize()
-
-
-            # for key, value in test_data.items():
-            #     output_status(f"  {key} = {value}")
-        
-        
-        output_dir  = "Result"
-        output_file = os.path.join(output_dir, "Output_data.json")
-
-        # 2. Create the directory if it doesn't exist
-        if not os.path.isdir(output_dir):
-            os.makedirs(output_dir)
-
-        # 3. Dump (and overwrite) your JSON each run
-        with open(output_file, "w") as f:
-            json.dump(Output_data, f, indent=4)
-
-        output_status(f"Results written to {output_file}")
-        sl(1)
+                    
+                    filepath=ir.filepath_creation(self.test_key,test_id,"Falling_edge")
+                    output_status(f"saving screenshot to {filepath}")
+                    self.scope.take_screenshot(filepath)
+                    sl(1)
+                    
     
-
-            
-        
     def clean_up(self):
         with open('C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\Output_data.json', 'r') as file:
             data = json.load(file)
