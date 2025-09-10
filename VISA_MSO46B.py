@@ -86,7 +86,7 @@ class TektronixMSO46B:
         self.inst.write('SAVE:IMAGE "C:/Temp.png"')
         self.inst.query('*OPC?')
         self.inst.write('FILESystem:READFile "C:/Temp.png"')
-        time.sleep(0.4)  # Wait for file to be ready
+        time.sleep(1)  # Wait for file to be ready
         raw_data = self.inst.read_raw()
         with open(file_path, 'wb') as f:
             f.write(raw_data)

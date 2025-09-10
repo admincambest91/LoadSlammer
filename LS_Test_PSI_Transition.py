@@ -53,303 +53,625 @@ class PSI_Transition():
     
     
     def run(self):
-        
-        #Step 3: Initialize output data structure
-        # This will be used to store the results of the test
-        Output_data = {
-    "PSI_Transition": {"Test Case":{}}
-}
+        pass
+#         #Step 3: Initialize output data structure
+#         # This will be used to store the results of the test
+#         self.Output_data = {
+#     "PSI_Transition": {"Test Case":{}}
+# }
 
-        #Step 4: set voltage rail in loadslammer:
-        self.loadslammer.maximize()
-        self.loadslammer.change_rail(self.test_key)
+#         #Step 4: set voltage rail in loadslammer:
+#         self.loadslammer.maximize()
+#         self.loadslammer.change_rail(self.test_key)
         
-        #clear all previous measurement in scope and add maximum for while loop later
-        self.scope.clear_all_measurements()
-        #self.scope.enable_measurements(["MAXIMUM"])
+#         #clear all previous measurement in scope and add maximum for while loop later
+#         output_status("Clearing all previous measurements in scope")
+#         sl(0.1)
+#         self.scope.clear_all_measurements()
+#         #set horizontal scale
+#         output_status("Setting scope horizontal scale to 200us/div")
+#         sl(0.1)
+#         self.scope.set_horizontal_scale(0.0002)
+
+#         #set scope vertical scale to 200mV/div
+#         output_status("Setting scope vertical scale to 200mV/div")
+#         sl(0.1)
+#         self.scope.configure_vertical(channel=1, scale=0.2)
+        
     
-        #iterate through the test case
-        for test_id, test_data in self.PSI_transition_parameter.items():
-            self.loadslammer.minimize()
-            self.SVI3.minimize()
+#         #iterate through the test case
+#         for test_id, test_data in self.PSI_transition_parameter.items():
+#             self.loadslammer.minimize()
+#             self.SVI3.minimize()
 
-            #dict to store the results for  test case
-            Output_data["PSI_Transition"]["Test Case"]["{}".format(test_id)]={"measured data":None}
-            Output_data["PSI_Transition"]["Test Case"]["{}".format(test_id)]["measured data"]={"Rising_edge":{},"Falling_edge":{}}
-            #grab the value for the rising and falling edge test cases
-            rising_edge=test_data["rising_edge"]
-            falling_edge=test_data["falling_edge"]
+#             #dict to store the results for  test case
+#             self.Output_data["PSI_Transition"]["Test Case"]["{}".format(test_id)]={"measured data":None}
+#             self.Output_data["PSI_Transition"]["Test Case"]["{}".format(test_id)]["measured data"]={"Rising_edge":{},"Falling_edge":{}}
+#             #grab the value for the rising and falling edge test cases
+#             rising_edge=test_data["rising_edge"]
+#             falling_edge=test_data["falling_edge"]
             
-            #set the test current
-            self.loadslammer.maximize()
-            self.loadslammer.adjust_test_current(rising_edge["IDD Set(A)"])
-            self.loadslammer.slam()
-            self.loadslammer.minimize()
+#             if self.test_key == "VDDCR_CPU0" or self.test_key == "VDDCR_CPU1":
+#                 if test_id =="1":
+#                     output_status("Starting test case ID: {} rising edge", test_id)
+#                     output_status("clear scope screen")
+#                     self.scope.clear_screen()
+#                     #run rising edge first
+#                     #set scope offset following Old VID
 
+#                     #set the test current
+#                     self.loadslammer.maximize()
+#                     output_status("Setting LoadSlammer current to {}A", rising_edge["IDD Set(A)"])
+#                     self.loadslammer.stop()
+#                     self.loadslammer.adjust_test_current(rising_edge["IDD Set(A)"])
+#                     self.loadslammer.slam()
+#                     self.loadslammer.minimize()
 
-            
-            if self.test_key == "VDDCR_CPU0" or self.test_key == "VDDCR_CPU1":
-                if test_id =="1":
-                    self.scope.clear_screen()
-                    #run rising edge first
-                    #set scope offset following Old VID
-                    self.scope.offset(channel=1, offset=rising_edge["Old_VID (mV)"]/1000)
-                    sl(0.1)
+#                     output_status("Setting scope offset to {}V", rising_edge["Old_VID (mV)"]/1000)
+#                     self.scope.offset(channel=1, offset=rising_edge["Old_VID (mV)"]/1000)
+#                     sl(0.1)
 
-                    #set the old PSI and VID in SVI3
-                    self.SVI3.maximize()
-                    sl(0.1)
-                    self.SVI3.key_in_value('VID','{}mV'.format(rising_edge["Old_VID (mV)"]))
-                    self.SVI3.click('Set_VID')
-                    sl(2)
+#                     #set the old PSI and VID in SVI3
+#                     self.SVI3.maximize()
+#                     sl(0.1)
+#                     output_status("Setting SVI3 Old VID to {}mV", rising_edge["Old_VID (mV)"])
+#                     self.SVI3.key_in_value('VID','{}mV'.format(rising_edge["Old_VID (mV)"]))
+#                     self.SVI3.click('Set_VID')
+#                     sl(2)
 
-                    #set scope trigger 
-                    self.scope.set_trigger_level(rising_edge["Old_VID (mV)"]/1000, rising_edge["Target_VID (mV)"]/1000, slope="RISE")
-                    sl(0.1)
+#                     #set scope trigger 
+#                     output_status("Setting scope trigger level to below {}V", rising_edge["Target_VID (mV)"]/1000)
+#                     self.scope.set_trigger_level(rising_edge["Old_VID (mV)"]/1000, rising_edge["Target_VID (mV)"]/1000, slope="RISE")
+#                     sl(0.1)
 
+#                     output_status("Setting SVI3 Old PSI to {}", rising_edge["Old_PSI"])
+#                     self.SVI3.key_in_value('PSI','{}'.format(rising_edge["Old_PSI"]))
+#                     self.SVI3.click('Set_PSI')
+#                     sl(1)
 
-                    self.SVI3.key_in_value('PSI','{}'.format(rising_edge["Old_PSI"]))
-                    self.SVI3.click('Set_PSI')
-                    sl(1)
-
-                    self.SVI3.key_in_value('VID','{}mV'.format(rising_edge["Target_VID (mV)"]))
-                    self.SVI3.click('Set_VID')
-                    # output_status("sleep for 10 seconds to wait for the voltage to settle")
-                    # sl(10)
-                    self.SVI3.minimize()
+#                     output_status("Setting SVI3 Target VID to {}mV", rising_edge["Target_VID (mV)"])
+#                     self.SVI3.key_in_value('VID','{}mV'.format(rising_edge["Target_VID (mV)"]))
+#                     self.SVI3.click('Set_VID')
+#                     # output_status("sleep for 10 seconds to wait for the voltage to settle")
+#                     # sl(10)
+#                     self.SVI3.minimize()
                     
-                    filepath=ir.filepath_creation(self.test_key,test_id,"Rising_edge")
-                    output_status(f"saving screenshot to {filepath}")
-                    self.scope.take_screenshot(filepath)
-                    sl(1)
+#                     filepath=ir.filepath_creation(self.test_key,test_id,"Rising_edge")
+#                     output_status(f"save rising edge  test:{test_id} screenshot to {filepath}")
+#                     self.scope.take_screenshot(filepath)
+#                     self.Output_data["PSI_Transition"]["Test Case"]["{}".format(test_id)]["measured data"]["Rising_edge"]["screenshot_path"]=filepath
+#                     sl(1)
 
-                    #run falling edge next
-                    self.scope.clear_screen()
+#                     #run falling edge next
+#                     output_status("Starting falling edge test case for test ID: {}", test_id)
+#                     output_status("clear scope screen")
+#                     self.scope.clear_screen()
                     
-                    #set scope trigger 
-                    self.scope.set_trigger_level(rising_edge["Old_VID (mV)"]/1000, rising_edge["Target_VID (mV)"]/1000, slope="FALL")
-                    sl(0.1)
+#                     #set scope trigger 
+#                     output_status("starting falling edge test case for test ID: {}", test_id)
 
-                    self.SVI3.maximize()
-                    self.SVI3.key_in_value('PSI','{}'.format(falling_edge["Old_PSI"]))
-                    self.SVI3.click('Set_PSI')
-                    sl(1)
+#                     output_status("Setting scope trigger level to below {}V", rising_edge["Target_VID (mV)"]/1000)
+#                     self.scope.set_trigger_level(rising_edge["Old_VID (mV)"]/1000, rising_edge["Target_VID (mV)"]/1000, slope="FALL")
+#                     sl(0.1)
 
-                    self.SVI3.key_in_value('VID','{}mV'.format(falling_edge["Target_VID (mV)"]))
-                    self.SVI3.click('Set_VID')
-                    # output_status("sleep for 10 seconds to wait for the voltage to settle")
-                    # sl(10)
-                    self.SVI3.minimize()
+#                     self.SVI3.maximize()
 
-                    filepath=ir.filepath_creation(self.test_key,test_id,"Falling_edge")
-                    self.scope.take_screenshot(filepath)
-                    sl(1)
+#                     output_status("Setting SVI3 Old PSI to {}", falling_edge["Old_PSI"])
+#                     self.SVI3.key_in_value('PSI','{}'.format(falling_edge["Old_PSI"]))
+#                     self.SVI3.click('Set_PSI')
+#                     sl(1)
 
-                if test_id =="2":
-                    self.scope.clear_screen()
-                    #run rising edge first
-                    #set scope offset following Old VID
-                    self.scope.offset(channel=1, offset=rising_edge["Old_VID (mV)"]/1000)
-                    sl(0.1)
+#                     output_status("Setting SVI3 targt VID to {}mV", falling_edge["Target_VID (mV)"])
+#                     self.SVI3.key_in_value('VID','{}mV'.format(falling_edge["Target_VID (mV)"]))
+#                     self.SVI3.click('Set_VID')
+#                     # output_status("sleep for 10 seconds to wait for the voltage to settle")
+#                     # sl(10)
+#                     self.SVI3.minimize()
 
-                    #set the old PSI and VID in SVI3
-                    self.SVI3.maximize()
-                    sl(0.1)
-                    self.SVI3.key_in_value('VID','{}mV'.format(rising_edge["Old_VID (mV)"]))
-                    self.SVI3.click('Set_VID')
-                    sl(2)
-
-                    #set scope trigger 
-                    self.scope.set_trigger_level(rising_edge["Old_VID (mV)"]/1000, rising_edge["Target_VID (mV)"]/1000, slope="RISE")
-                    sl(0.1)
-
-
-                    self.SVI3.key_in_value('PSI','{}'.format(rising_edge["Old_PSI"]))
-                    self.SVI3.click('Set_PSI')
-                    sl(1)
-
-                    self.SVI3.key_in_value('VID','{}mV'.format(rising_edge["Target_VID (mV)"]))
-                    self.SVI3.click('Set_VID')
-                    # output_status("sleep for 10 seconds to wait for the voltage to settle")
-                    # sl(10)
-                    self.SVI3.minimize()
                     
-                    filepath=ir.filepath_creation(self.test_key,test_id,"Rising_edge")
-                    output_status(f"saving screenshot to {filepath}")
-                    self.scope.take_screenshot(filepath)
-                    sl(1)
+#                     filepath=ir.filepath_creation(self.test_key,test_id,"Falling_edge")
+#                     output_status(f"save falling edge  test:{test_id} screenshot to {filepath}")
+#                     self.scope.take_screenshot(filepath)
+#                     self.Output_data["PSI_Transition"]["Test Case"]["{}".format(test_id)]["measured data"]["Falling_edge"]["screenshot_path"]=filepath
+#                     sl(1)
 
-                    #capture for the falling edge
-                    self.scope.clear_screen()
-                    #set scope trigger 
-                    self.scope.set_trigger_level(rising_edge["Old_VID (mV)"]/1000, rising_edge["Target_VID (mV)"]/1000, slope="FALL")
-                    sl(0.1)
+#                 if test_id =="2":
+#                     output_status("Starting test case ID: {} rising edge", test_id)
+#                     output_status("clear scope screen")
+#                     self.scope.clear_screen()
+#                     #run rising edge first
+#                     #set scope offset following Old VID
 
-                    self.SVI3.maximize()
-                    self.SVI3.key_in_value('PSI','{}'.format(falling_edge["Old_PSI"]))
-                    self.SVI3.click('Set_PSI')
-                    sl(1)
-
-                    self.SVI3.key_in_value('VID','{}mV'.format(falling_edge["Old_VID (mV)"]))
-                    self.SVI3.click('Set_VID')
-                    # output_status("sleep for 10 seconds to wait for the voltage to settle")
-                    # sl(10)
-
-                    self.SVI3.key_in_value('PSI','{}'.format(falling_edge["New_PSI"]))
-                    self.SVI3.click('Set_PSI')
-                    sl(1)
-
-                    self.SVI3.minimize()
-
-                    filepath=ir.filepath_creation(self.test_key,test_id,"Falling_edge")
-                    self.scope.take_screenshot(filepath)
-                    sl(1)
-
-                if test_id =="3":
-                    self.scope.clear_screen()
-                    #run rising edge first
-                    #set scope offset following Old VID
-                    self.scope.offset(channel=1, offset=rising_edge["Old_VID (mV)"]/1000)
-                    sl(0.1)
-
-                    #set the old PSI and VID in SVI3
-                    self.SVI3.maximize()
-                    sl(0.1)
-                    self.SVI3.key_in_value('VID','{}mV'.format(rising_edge["Old_VID (mV)"]))
-                    self.SVI3.click('Set_VID')
-                    sl(2)
-
-                    #set scope trigger 
-                    self.scope.set_trigger_level(rising_edge["Old_VID (mV)"]/1000, rising_edge["Target_VID (mV)"]/1000, slope="RISE")
-                    sl(0.1)
+#                     output_status("Setting LoadSlammer current to {}A", rising_edge["IDD Set(A)"])
+#                     self.loadslammer.maximize()
+#                     self.loadslammer.stop()
+#                     self.loadslammer.adjust_test_current(rising_edge["IDD Set(A)"])
+#                     self.loadslammer.slam()
+#                     self.loadslammer.minimize()
 
 
-                    self.SVI3.key_in_value('PSI','{}'.format(rising_edge["Old_PSI"]))
-                    self.SVI3.click('Set_PSI')
-                    sl(1)
+#                     output_status("Setting scope offset to {}V", rising_edge["Old_VID (mV)"]/1000)
+#                     self.scope.offset(channel=1, offset=rising_edge["Old_VID (mV)"]/1000)
+#                     sl(0.1)
 
-                    self.SVI3.key_in_value('VID','{}mV'.format(rising_edge["Target_VID (mV)"]))
-                    self.SVI3.click('Set_VID')
-                    # output_status("sleep for 10 seconds to wait for the voltage to settle")
-                    # sl(10)
-                    self.SVI3.minimize()
+#                     #set the old PSI and VID in SVI3
+#                     self.SVI3.maximize()
+#                     sl(0.1)
+
+#                     output_status("Setting SVI3 Old VID to {}mV", rising_edge["Old_VID (mV)"])
+#                     self.SVI3.key_in_value('VID','{}mV'.format(rising_edge["Old_VID (mV)"]))
+#                     self.SVI3.click('Set_VID')
+#                     sl(2)
+
+#                     #set scope trigger 
+#                     output_status("Setting scope trigger level to below {}V", rising_edge["Target_VID (mV)"]/1000)
+#                     self.scope.set_trigger_level(rising_edge["Old_VID (mV)"]/1000, rising_edge["Target_VID (mV)"]/1000, slope="RISE")
+#                     sl(0.1)
+
+#                     output_status("Setting SVI3 Old PSI to {}", rising_edge["Old_PSI"])
+#                     self.SVI3.key_in_value('PSI','{}'.format(rising_edge["Old_PSI"]))
+#                     self.SVI3.click('Set_PSI')
+#                     sl(1)
+
+#                     output_status("Setting SVI3 Target VID to {}mV", rising_edge["Target_VID (mV)"])
+#                     self.SVI3.key_in_value('VID','{}mV'.format(rising_edge["Target_VID (mV)"]))
+#                     self.SVI3.click('Set_VID')
+#                     # output_status("sleep for 10 seconds to wait for the voltage to settle")
+#                     # sl(10)
+#                     self.SVI3.minimize()
                     
-                    filepath=ir.filepath_creation(self.test_key,test_id,"Rising_edge")
-                    (f"saving screenshot to {filepath}")
-                    self.scope.take_screenshot(filepath)
-                    sl(1)
+#                     filepath=ir.filepath_creation(self.test_key,test_id,"Rising_edge")
+#                     output_status(f"save rising edge  test:{test_id} screenshot to {filepath}")
+#                     self.scope.take_screenshot(filepath)
+#                     self.Output_data["PSI_Transition"]["Test Case"]["{}".format(test_id)]["measured data"]["Rising_edge"]["screenshot_path"]=filepath
+#                     sl(1)
 
-                    #capture for the falling edge
-                    self.scope.clear_screen()
-                    #set scope trigger 
-                    self.scope.set_trigger_level(rising_edge["Old_VID (mV)"]/1000, rising_edge["Target_VID (mV)"]/1000, slope="FALL")
-                    sl(0.1)
+#                     #capture for the falling edge
+#                     output_status("Starting falling edge test case for test ID: {}", test_id)
+#                     output_status("clear scope screen")
+#                     self.scope.clear_screen()
+#                     #set scope trigger 
+#                     output_status("Setting scope trigger level to below {}V", rising_edge["Target_VID (mV)"]/1000)
+#                     self.scope.set_trigger_level(rising_edge["Old_VID (mV)"]/1000, rising_edge["Target_VID (mV)"]/1000, slope="FALL")
+#                     sl(0.1)
 
-                    self.SVI3.maximize()
-                    self.SVI3.key_in_value('PSI','{}'.format(falling_edge["Old_PSI"]))
-                    self.SVI3.click('Set_PSI')
-                    sl(1)
+#                     self.SVI3.maximize()
+#                     output_status("Setting SVI3 Old PSI to {}", falling_edge["Old_PSI"])
+#                     self.SVI3.key_in_value('PSI','{}'.format(falling_edge["Old_PSI"]))
+#                     self.SVI3.click('Set_PSI')
+#                     sl(1)
 
-                    self.SVI3.key_in_value('VID','{}mV'.format(falling_edge["Old_VID (mV)"]))
-                    self.SVI3.click('Set_VID')
-                    # output_status("sleep for 10 seconds to wait for the voltage to settle")
-                    # sl(10)
-
-                    self.SVI3.key_in_value('PSI','{}'.format(falling_edge["New_PSI"]))
-                    self.SVI3.click('Set_PSI')
-                    sl(1)
-
-                    self.SVI3.minimize()
-
-                    filepath=ir.filepath_creation(self.test_key,test_id,"Falling_edge")
-                    self.scope.take_screenshot(filepath)
-                    sl(1)
-
-                if test_id =="4":
-
-                    self.scope.clear_screen()
-                    #run rising edge first
-                    #set scope offset following falling edge VID because rising edge VID start at 1.2V.
-                    self.scope.offset(channel=1, offset=falling_edge["Target_VID (mV)"]/1000)
-                    sl(0.1)
-
-                    #set the old PSI and VID in SVI3
-                    self.SVI3.maximize()
-                    sl(0.1)
-
-                    #set scope trigger 
-                    self.scope.set_trigger_level(falling_edge["Target_VID (mV)"]/1000, rising_edge["Target_VID (mV)"]/1000, slope="RISE")
-                    sl(0.1)
+#                     output_status("Setting SVI3 targt VID to {}mV", falling_edge["Target_VID (mV)"])
+#                     self.SVI3.key_in_value('VID','{}mV'.format(falling_edge["Old_VID (mV)"]))
+#                     self.SVI3.click('Set_VID')
+#                     # output_status("sleep for 10 seconds to wait for the voltage to settle")
+#                     # sl(10)
+#                     output_status("Setting SVI3 New PSI to {}", falling_edge["New_PSI"])
+#                     self.SVI3.key_in_value('PSI','{}'.format(falling_edge["New_PSI"]))
+#                     self.SVI3.click('Set_PSI')
+#                     sl(1)
 
 
-                    self.SVI3.key_in_value('PSI','{}'.format(rising_edge["Old_PSI"]))
-                    self.SVI3.click('Set_PSI')
-                    sl(1)
+#                     output_status("Setting back the PSI to PSI: {}", rising_edge["New_PSI"])
+#                     self.SVI3.key_in_value('PSI','{}'.format(rising_edge["New_PSI"]))
+#                     self.SVI3.click('Set_PSI')
+#                     sl(1)
 
-                    self.SVI3.key_in_value('VID','{}mV'.format(rising_edge["Target_VID (mV)"]))
-                    self.SVI3.click('Set_VID')
-                    # output_status("sleep for 10 seconds to wait for the voltage to settle")
-                    # sl(10)
-                    self.SVI3.minimize()
+#                     self.SVI3.minimize()
+
+#                     filepath=ir.filepath_creation(self.test_key,test_id,"Falling_edge")
+#                     output_status(f"save falling edge  test:{test_id} screenshot to {filepath}")
+#                     self.scope.take_screenshot(filepath)
+#                     self.Output_data["PSI_Transition"]["Test Case"]["{}".format(test_id)]["measured data"]["Falling_edge"]["screenshot_path"]=filepath
+#                     sl(1)
+
+#                 if test_id =="3":
+#                     output_status("Starting test case ID: {} rising edge", test_id)
+#                     output_status("clear scope screen")
+#                     self.scope.clear_screen()
+
+#                     output_status("Setting LoadSlammer current to {}A", rising_edge["IDD Set(A)"])
+#                     self.loadslammer.maximize()
+#                     self.loadslammer.stop()
+#                     self.loadslammer.adjust_test_current(rising_edge["IDD Set(A)"])
+#                     self.loadslammer.slam()
+#                     self.loadslammer.minimize()
+#                     #run rising edge first
+#                     #set scope offset following Old VID
+#                     output_status("Setting LoadSlammer current to {}A", rising_edge["IDD Set(A)"])
+#                     self.scope.offset(channel=1, offset=rising_edge["Old_VID (mV)"]/1000)
+#                     sl(0.1)
+
+#                     #set the old PSI and VID in SVI3
+#                     self.SVI3.maximize()
+#                     sl(0.1)
+#                     output_status("Setting SVI3 Old VID to {}mV", rising_edge["Old_VID (mV)"])
+#                     self.SVI3.key_in_value('VID','{}mV'.format(rising_edge["Old_VID (mV)"]))
+#                     self.SVI3.click('Set_VID')
+#                     sl(2)
+
+#                     #set scope trigger 
+#                     output_status("Setting scope trigger level to below {}V", rising_edge["Target_VID (mV)"]/1000)
+#                     self.scope.set_trigger_level(rising_edge["Old_VID (mV)"]/1000, rising_edge["Target_VID (mV)"]/1000, slope="RISE")
+#                     sl(0.1)
+
+#                     output_status("Setting SVI3 Old PSI to {}", rising_edge["Old_PSI"])
+#                     self.SVI3.key_in_value('PSI','{}'.format(rising_edge["Old_PSI"]))
+#                     self.SVI3.click('Set_PSI')
+#                     sl(1)
+
+#                     output_status("Setting SVI3 Target VID to {}mV", rising_edge["Target_VID (mV)"])
+#                     self.SVI3.key_in_value('VID','{}mV'.format(rising_edge["Target_VID (mV)"]))
+#                     self.SVI3.click('Set_VID')
+#                     # output_status("sleep for 10 seconds to wait for the voltage to settle")
+#                     # sl(10)
+#                     self.SVI3.minimize()
                     
-                    filepath=ir.filepath_creation(self.test_key,test_id,"Rising_edge")
-                    output_status(f"saving screenshot to {filepath}")
-                    self.scope.take_screenshot(filepath)
-                    sl(1)
+#                     filepath=ir.filepath_creation(self.test_key,test_id,"Rising_edge")
+#                     output_status(f"save rising edge  test:{test_id} screenshot to {filepath}")
+#                     self.scope.take_screenshot(filepath)
+#                     self.Output_data["PSI_Transition"]["Test Case"]["{}".format(test_id)]["measured data"]["Rising_edge"]["screenshot_path"]=filepath
+#                     sl(1)
 
-                    #capture for the falling edge
-                    self.scope.clear_screen()
-                    #set scope trigger 
-                    self.scope.set_trigger_level(rising_edge["Old_VID (mV)"]/1000, rising_edge["Target_VID (mV)"]/1000, slope="FALL")
-                    sl(0.1)
+#                     #capture for the falling edge
+#                     output_status("Starting falling edge test case for test ID: {}", test_id)
+#                     output_status("clear scope screen")
+#                     self.scope.clear_screen()
+#                     #set scope trigger 
+#                     output_status("Setting scope trigger level to below {}V", rising_edge["Target_VID (mV)"]/1000)
+#                     self.scope.set_trigger_level(rising_edge["Old_VID (mV)"]/1000, rising_edge["Target_VID (mV)"]/1000, slope="FALL")
+#                     sl(0.1)
 
-                    self.SVI3.maximize()
-                    self.SVI3.key_in_value('PSI','{}'.format(falling_edge["Old_PSI"]))
-                    self.SVI3.click('Set_PSI')
-                    sl(1)
+#                     output_status("Setting SVI3 Old PSI to {}", falling_edge["Old_PSI"])
+#                     self.SVI3.maximize()
+#                     self.SVI3.key_in_value('PSI','{}'.format(falling_edge["Old_PSI"]))
+#                     self.SVI3.click('Set_PSI')
+#                     sl(1)
 
-                    self.SVI3.key_in_value('VID','{}mV'.format(falling_edge["Old_VID (mV)"]))
-                    self.SVI3.click('Set_VID')
+#                     output_status("Setting SVI3 targt VID to {}mV", falling_edge["Target_VID (mV)"])
+#                     self.SVI3.key_in_value('VID','{}mV'.format(falling_edge["Old_VID (mV)"]))
+#                     self.SVI3.click('Set_VID')
+#                     # output_status("sleep for 10 seconds to wait for the voltage to settle")
+#                     # sl(10)
+#                     output_status("Setting SVI3 New PSI to {}", falling_edge["New_PSI"])
+#                     self.SVI3.key_in_value('PSI','{}'.format(falling_edge["New_PSI"]))
+#                     self.SVI3.click('Set_PSI')
+#                     sl(1)
 
-                    self.SVI3.key_in_value('VID','{}mV'.format(falling_edge[" Target_VID (mV)"]))
-                    self.SVI3.click('Set_VID')
+#                     output_status("Setting back the PSI to PSI: {}", rising_edge["New_PSI"])
+#                     self.SVI3.key_in_value('PSI','{}'.format(rising_edge["New_PSI"]))
+#                     self.SVI3.click('Set_PSI')
+#                     sl(1)
+
+#                     self.SVI3.minimize()
+
+#                     filepath=ir.filepath_creation(self.test_key,test_id,"Falling_edge")
+#                     output_status(f"save falling edge  test:{test_id} screenshot to {filepath}")
+#                     self.scope.take_screenshot(filepath)
+#                     self.Output_data["PSI_Transition"]["Test Case"]["{}".format(test_id)]["measured data"]["Falling_edge"]["screenshot_path"]=filepath
+#                     sl(1)
+
                     
-                    self.SVI3.minimize()
+
+#                 if test_id =="4":
+#                     output_status("Starting test case ID: {} rising edge", test_id)
+#                     output_status("clear scope screen")
+#                     self.scope.clear_screen()
+#                     #run rising edge first
+#                     #set scope offset following falling edge VID because rising edge VID start at 1.2V.
+#                     output_status("Setting LoadSlammer current to {}A", rising_edge["IDD Set(A)"])
+#                     self.loadslammer.maximize()
+#                     self.loadslammer.stop()
+#                     self.loadslammer.adjust_test_current(rising_edge["IDD Set(A)"])
+#                     self.loadslammer.slam()
+#                     self.loadslammer.minimize()
+
+#                     output_status("Setting scope offset to {}V", falling_edge["Target_VID (mV)"]/1000)
+#                     self.scope.offset(channel=1, offset=falling_edge["Target_VID (mV)"]/1000)
+#                     sl(0.1)
+
                     
-                    filepath=ir.filepath_creation(self.test_key,test_id,"Falling_edge")
-                    output_status(f"saving screenshot to {filepath}")
-                    self.scope.take_screenshot(filepath)
-                    sl(1)
+
+#                     #set scope trigger 
+#                     output_status("Setting scope trigger level to below {}V", falling_edge["Target_VID (mV)"]/1000)
+#                     self.scope.set_trigger_level(falling_edge["Target_VID (mV)"]/1000, rising_edge["Target_VID (mV)"]/1000, slope="RISE")
+#                     sl(0.1)
+
+#                     #set the old PSI and VID in SVI3
+#                     self.SVI3.maximize()
+#                     sl(0.1)
                     
+#                     output_status("settting Old PSI to {}", rising_edge["Old_PSI"])
+#                     self.SVI3.key_in_value('PSI','{}'.format(rising_edge["Old_PSI"]))
+#                     self.SVI3.click('Set_PSI')
+#                     sl(1)
+
+#                     output_status("settting New PSI to {}", rising_edge["New_PSI"])
+#                     self.SVI3.key_in_value('PSI','{}'.format(rising_edge["New_PSI"]))
+#                     self.SVI3.click('Set_PSI')
+#                     sl(1)
+
+#                     # output_status("Setting SVI3 Target VID to {}mV", rising_edge["Target_VID (mV)"])
+#                     # self.SVI3.key_in_value('VID','{}mV'.format(rising_edge["Target_VID (mV)"]))
+#                     # self.SVI3.click('Set_VID')
+#                     # output_status("sleep for 10 seconds to wait for the voltage to settle")
+#                     # sl(10)
+
+#                     output_status("Setting back the PSI to PSI: {}", falling_edge["New_PSI"])
+#                     self.SVI3.key_in_value('PSI','{}'.format(falling_edge["New_PSI"]))
+#                     self.SVI3.click('Set_PSI')
+#                     sl(1)
+
+#                     self.SVI3.minimize()
+                    
+#                     filepath=ir.filepath_creation(self.test_key,test_id,"Rising_edge")
+#                     output_status(f"save rising edge  test:{test_id} screenshot to {filepath}")
+#                     self.scope.take_screenshot(filepath)
+#                     self.Output_data["PSI_Transition"]["Test Case"]["{}".format(test_id)]["measured data"]["Rising_edge"]["screenshot_path"]=filepath
+#                     sl(1)
+
+                    
+
+#                     #capture for the falling edge
+#                     output_status("Starting falling edge test case for test ID: {}", test_id)
+#                     output_status("clear scope screen")
+#                     self.scope.clear_screen()
+#                     #set scope trigger 
+#                     output_status("Setting scope trigger level to {}V", rising_edge["Target_VID (mV)"]/1000)
+#                     self.scope.set_trigger_level(rising_edge["Old_VID (mV)"]/1000, rising_edge["Target_VID (mV)"]/1000, slope="FALL")
+#                     sl(0.1)
+
+#                     self.SVI3.maximize()
+
+#                     output_status("Setting SVI3 Old PSI to {}", falling_edge["Old_PSI"])
+#                     self.SVI3.key_in_value('PSI','{}'.format(falling_edge["Old_PSI"]))
+#                     self.SVI3.click('Set_PSI')
+#                     sl(1)
+
+#                     output_status("Setting SVI3 Old VID to {}mV", falling_edge["Old_VID (mV)"])
+#                     self.SVI3.key_in_value('VID','{}mV'.format(falling_edge["Old_VID (mV)"]))
+#                     self.SVI3.click('Set_VID')
+                    
+#                     output_status("Setting SVI3 New VID to {}mV", falling_edge["Target_VID (mV)"])
+#                     self.SVI3.key_in_value('VID','{}mV'.format(falling_edge["Target_VID (mV)"]))
+#                     self.SVI3.click('Set_VID')
+                    
+#                     self.SVI3.minimize()
+                    
+#                     filepath=ir.filepath_creation(self.test_key,test_id,"Falling_edge")
+#                     output_status(f"save falling edge  test:{test_id} screenshot to {filepath}")
+#                     self.scope.take_screenshot(filepath)
+#                     self.Output_data["PSI_Transition"]["Test Case"]["{}".format(test_id)]["measured data"]["Falling_edge"]["screenshot_path"]=filepath
+#                     sl(1)
+
+#                     output_status("Releasing LoadSlammer current to 0A")
+#                     self.loadslammer.maximize()
+#                     self.loadslammer.stop()
+#                     self.loadslammer.minimize()
+
+#             elif self.test_key == "VDDCR_SOC" or self.test_key == "VDDIO":
+#                 if test_id =="1":
+#                     output_status("Starting test case ID: {} rising edge for rail {}", test_id, self.test_key)
+#                     output_status("clear scope screen")
+#                     self.scope.clear_screen()
+#                     #run rising edge first
+#                     #set scope offset following Old VID
+
+#                     #set the test current
+#                     self.loadslammer.maximize()
+#                     output_status("Setting LoadSlammer current to {}A", rising_edge["IDD Set(A)"])
+#                     self.loadslammer.stop()
+#                     self.loadslammer.adjust_test_current(rising_edge["IDD Set(A)"])
+#                     self.loadslammer.slam()
+#                     self.loadslammer.minimize()
+
+#                     output_status("Setting scope offset to {}V", rising_edge["Old_VID (mV)"]/1000)
+#                     self.scope.offset(channel=1, offset=rising_edge["Old_VID (mV)"]/1000)
+#                     sl(0.1)
+
+#                     #set the old PSI and VID in SVI3
+#                     self.SVI3.maximize()
+#                     sl(0.1)
+                    
+
+#                     #set scope trigger 
+#                     output_status("Setting scope trigger level to below {}V", rising_edge["Target_VID (mV)"]/1000)
+#                     self.scope.set_trigger_level(rising_edge["Old_VID (mV)"]/1000, rising_edge["Target_VID (mV)"]/1000, slope="RISE")
+#                     sl(0.1)
+
+#                     output_status("Setting SVI3 Old PSI to {}", rising_edge["Old_PSI"])
+#                     self.SVI3.key_in_value('PSI','{}'.format(rising_edge["Old_PSI"]))
+#                     self.SVI3.click('Set_PSI')
+#                     sl(1)
+
+#                     output_status("Setting SVI3 Old VID to {}mV", rising_edge["Old_VID (mV)"])
+#                     self.SVI3.key_in_value('VID','{}mV'.format(rising_edge["Old_VID (mV)"]))
+#                     self.SVI3.click('Set_VID')
+#                     sl(2)
+
+#                     output_status("Setting SVI3 Target VID to {}mV", rising_edge["Target_VID (mV)"])
+#                     self.SVI3.key_in_value('VID','{}mV'.format(rising_edge["Target_VID (mV)"]))
+#                     self.SVI3.click('Set_VID')
+#                     # output_status("sleep for 10 seconds to wait for the voltage to settle")
+#                     # sl(10)
+#                     self.SVI3.minimize()
+                    
+#                     filepath=ir.filepath_creation(self.test_key,test_id,"Rising_edge")
+#                     output_status(f"save rising edge  test:{test_id} screenshot to {filepath}")
+#                     self.scope.take_screenshot(filepath)
+#                     self.Output_data["PSI_Transition"]["Test Case"]["{}".format(test_id)]["measured data"]["Rising_edge"]["screenshot_path"]=filepath
+#                     sl(1)
+
+#                     #run falling edge next
+#                     output_status("Starting falling edge test case for test ID: {}", test_id)
+#                     output_status("clear scope screen")
+#                     self.scope.clear_screen()
+                    
+#                     #set scope trigger 
+#                     output_status("starting falling edge test case for test ID: {}", test_id)
+
+#                     output_status("Setting scope trigger level to below {}V", rising_edge["Target_VID (mV)"]/1000)
+#                     self.scope.set_trigger_level(rising_edge["Old_VID (mV)"]/1000, rising_edge["Target_VID (mV)"]/1000, slope="FALL")
+#                     sl(0.1)
+
+#                     self.SVI3.maximize()
+
+#                     output_status("Setting SVI3 Old PSI to {}", falling_edge["Old_PSI"])
+#                     self.SVI3.key_in_value('PSI','{}'.format(falling_edge["Old_PSI"]))
+#                     self.SVI3.click('Set_PSI')
+#                     sl(1)
+
+#                     output_status("Setting SVI3 targt VID to {}mV", falling_edge["Target_VID (mV)"])
+#                     self.SVI3.key_in_value('VID','{}mV'.format(falling_edge["Target_VID (mV)"]))
+#                     self.SVI3.click('Set_VID')
+#                     # output_status("sleep for 10 seconds to wait for the voltage to settle")
+#                     # sl(10)
+#                     self.SVI3.minimize()
+
+                    
+#                     filepath=ir.filepath_creation(self.test_key,test_id,"Falling_edge")
+#                     output_status(f"save falling edge  test:{test_id} screenshot to {filepath}")
+#                     self.scope.take_screenshot(filepath)
+#                     self.Output_data["PSI_Transition"]["Test Case"]["{}".format(test_id)]["measured data"]["Falling_edge"]["screenshot_path"]=filepath
+#                     sl(1)
+
+#                 if test_id =="2":
+#                     output_status("Starting test case ID: {} rising edge", test_id)
+#                     output_status("clear scope screen")
+#                     self.scope.clear_screen()
+#                     #run rising edge first
+#                     #set scope offset following Old VID
+
+#                     output_status("Setting LoadSlammer current to {}A", rising_edge["IDD Set(A)"])
+#                     self.loadslammer.maximize()
+#                     self.loadslammer.stop()
+#                     self.loadslammer.adjust_test_current(rising_edge["IDD Set(A)"])
+#                     self.loadslammer.slam()
+#                     self.loadslammer.minimize()
+
+
+#                     output_status("Setting scope offset to {}V", rising_edge["Old_VID (mV)"]/1000)
+#                     self.scope.offset(channel=1, offset=rising_edge["Old_VID (mV)"]/1000)
+#                     sl(0.1)
+
+#                     #set the old PSI and VID in SVI3
+#                     self.SVI3.maximize()
+#                     sl(0.1)
+
+                    
+
+#                     #set scope trigger 
+#                     output_status("Setting scope trigger level to below {}V", rising_edge["Target_VID (mV)"]/1000)
+#                     self.scope.set_trigger_level(rising_edge["Old_VID (mV)"]/1000, rising_edge["Target_VID (mV)"]/1000, slope="RISE")
+#                     sl(0.1)
+
+
+
+#                     output_status("Setting SVI3 Old PSI to {}", rising_edge["Old_PSI"])
+#                     self.SVI3.key_in_value('PSI','{}'.format(rising_edge["Old_PSI"]))
+#                     self.SVI3.click('Set_PSI')
+#                     sl(1)
+
+#                     output_status("Setting SVI3 Old VID to {}mV", rising_edge["Old_VID (mV)"])
+#                     self.SVI3.key_in_value('VID','{}mV'.format(rising_edge["Old_VID (mV)"]))
+#                     self.SVI3.click('Set_VID')
+#                     sl(2)
+
+#                     output_status("Setting SVI3 Target VID to {}mV", rising_edge["Target_VID (mV)"])
+#                     self.SVI3.key_in_value('VID','{}mV'.format(rising_edge["Target_VID (mV)"]))
+#                     self.SVI3.click('Set_VID')
+#                     # output_status("sleep for 10 seconds to wait for the voltage to settle")
+#                     # sl(10)
+#                     self.SVI3.minimize()
+                    
+#                     filepath=ir.filepath_creation(self.test_key,test_id,"Rising_edge")
+#                     output_status(f"save rising edge  test:{test_id} screenshot to {filepath}")
+#                     self.scope.take_screenshot(filepath)
+#                     self.Output_data["PSI_Transition"]["Test Case"]["{}".format(test_id)]["measured data"]["Rising_edge"]["screenshot_path"]=filepath
+#                     sl(1)
+
+#                     #capture for the falling edge
+#                     output_status("Starting falling edge test case for test ID: {}", test_id)
+#                     output_status("clear scope screen")
+#                     self.scope.clear_screen()
+#                     #set scope trigger 
+#                     output_status("Setting scope trigger level to below {}V", rising_edge["Target_VID (mV)"]/1000)
+#                     self.scope.set_trigger_level(rising_edge["Old_VID (mV)"]/1000, rising_edge["Target_VID (mV)"]/1000, slope="FALL")
+#                     sl(0.1)
+
+#                     self.SVI3.maximize()
+#                     output_status("Setting SVI3 Old PSI to {}", falling_edge["Old_PSI"])
+#                     self.SVI3.key_in_value('PSI','{}'.format(falling_edge["Old_PSI"]))
+#                     self.SVI3.click('Set_PSI')
+#                     sl(1)
+
+#                     output_status("Setting SVI3 targt VID to {}mV", falling_edge["Target_VID (mV)"])
+#                     self.SVI3.key_in_value('VID','{}mV'.format(falling_edge["Target_VID (mV)"]))
+#                     self.SVI3.click('Set_VID')
+#                     # output_status("sleep for 10 seconds to wait for the voltage to settle")
+#                     # sl(10)
+#                     output_status("Setting SVI3 New PSI to {}", falling_edge["New_PSI"])
+#                     self.SVI3.key_in_value('PSI','{}'.format(falling_edge["New_PSI"]))
+#                     self.SVI3.click('Set_PSI')
+#                     sl(1)
+
+
+#                     output_status("Setting back the PSI to PSI: {}", rising_edge["New_PSI"])
+#                     self.SVI3.key_in_value('PSI','{}'.format(rising_edge["New_PSI"]))
+#                     self.SVI3.click('Set_PSI')
+#                     sl(1)
+
+#                     self.SVI3.minimize()
+
+#                     filepath=ir.filepath_creation(self.test_key,test_id,"Falling_edge")
+#                     output_status(f"save falling edge  test:{test_id} screenshot to {filepath}")
+#                     self.scope.take_screenshot(filepath)
+#                     self.Output_data["PSI_Transition"]["Test Case"]["{}".format(test_id)]["measured data"]["Falling_edge"]["screenshot_path"]=filepath
+#                     sl(1)
+
+#                     output_status("Releasing LoadSlammer current to 0A")
+#                     self.loadslammer.maximize()
+#                     self.loadslammer.stop()
+#                     self.loadslammer.minimize()
+
+#         output_dir  = "Result"
+#         output_file = os.path.join(output_dir, "Output_data.json")
+
+#         # 2. Create the directory if it doesn't exist
+#         if not os.path.isdir(output_dir):
+#             os.makedirs(output_dir)
+
+#         # 3. Dump (and overwrite) your JSON each run
+#         with open(output_file, "w") as f:
+#             json.dump(self.Output_data, f, indent=4)
+
+#         output_status(f"Results written to {output_file}")
+#         sl(1)            
     
     def clean_up(self):
         with open('C:\\Users\\HPS Penang Tester\\Documents\\python\\Load_slammer\\Result\\Output_data.json', 'r') as file:
             data = json.load(file)
 
-        calibration_coordinate=self.excel_result_coordinate[self.test_key]["Spec_Calibration"]
-        VOTF_coordinate=self.excel_result_coordinate[self.test_key]["VOTF"]
-        Calibration_data = data.get("Spec_calibration", {}).get("VID voltage", {})
-        VOTF_data = data.get("VOTF_test", {}).get("Test Case", {})
+        result_coordinate=self.excel_result_coordinate[self.test_key]["PSI Validation"]
+        PSI_transition_data = data.get("PSI_Transition", {}).get("Test Case", {})
+        
         
         #caibration data
         
-        for vid_mV, currents in Calibration_data.items():
-            for current, values in currents.items():
-                vout = values.get("measured_vout")
-                if vout is not None:
+        for test_case, measured_data in PSI_transition_data.items():
+            for edge, values in measured_data.items():
+                rising_edge = values.get("Rising_edge", {}).get("screenshot_path", "")
+                falling_edge= values.get("Falling_edge", {}).get("screenshot_path", "")
+                if rising_edge and falling_edge is not None:
                     # Convert column letter to number (A=1, B=2, etc.)
-                    col_letter = calibration_coordinate["Test current"]["{}A".format(current)]["VID(mV)"][vid_mV]["column_start"]
-                    col_number = ord(col_letter) - ord('A') + 1
+                    rising_edge_col_letter = result_coordinate["Test Case"]["{}".format(test_case)]["rising_edge"]["col_start"]
+                    rising_col_number = ord(rising_edge_col_letter) - ord('A') + 1
                     
-                    cell = self.worksheet.cell(row=calibration_coordinate["Test current"]["{}A".format(current)]["VID(mV)"][vid_mV]["row_start"],column=col_number)
-
-                    cell.value = vout  # keep as a float, e.g., 1.234567
-                    cell.number_format = "0.000"  # 3 decimal places
-
+                    
         #votf data
 
         
-        ir.insert_votf_images(self.worksheet, VOTF_data, VOTF_coordinate)
+        ir.insert_votf_images(self.worksheet, PSI_transition_data, result_coordinate)
         # for test_case, picture_files in VOTF_data.items():
         #     coordinates = VOTF_coordinate[f"Test_Case_{test_case}"]
 
@@ -441,7 +763,7 @@ class PSI_Transition():
 
 #main function to execute the test
 if __name__ == "__main__":
-    LS_test_framework.execute("VDDCR_CPU0", PSI_Transition )
+    LS_test_framework.execute("VDDCR_SOC", PSI_Transition )
     
 
     
