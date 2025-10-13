@@ -303,11 +303,11 @@ class ScopePromptUI:
                         "rise_time": rise_time,
                         "time_cursor_A(us)": tA,
                         "time_cursor_B(us)": tB,
-                        "measure 80% VID up": vA,
-                        "Measure 20% VID up": vB,
+                        "measure 80% VID up": vA if vA>2 else vA*1000,
+                        "Measure 20% VID up": vB if vB>2 else vB*1000,
                         "voltage_delta": abs(vB - vA),
                         "Change in time(us)": abs(tB - tA),
-                        "Vmax@VOTF(mV)": maximum_voltage
+                        "Vmax@VOTF(mV)": maximum_voltage if maximum_voltage>2 else maximum_voltage*1000,    
                     }
             elif "Picture_2" in filepath:
                 #tA tB in us. 
@@ -330,7 +330,7 @@ class ScopePromptUI:
                 self.output_data["VOTF_test"]["Test Case"]["{}".format(self.test_case_num)]["measured data"][
                     "Picture 3"] = {
                         "filepath": filepath,
-                        "Vmin@VOTF(mV)": vB, 
+                        "Vmin@VOTF(mV)": vB if vB>2 else vB*1000, 
                     }
                 # self.output_data["VOTF_test"]["Test Case"]["{}".format(self.test_case_num)]["measured data"][
                 #     "Picture 3"] = filepath
@@ -359,9 +359,10 @@ class ScopePromptUI:
 
             self.scope.inst.timeout = 20000  # 20 seconds
             self.scope.inst.write('SAVE:IMAGE "C:/Temp.png"')
+            time.sleep(0.5)  # Wait for the command to process
             self.scope.inst.query('*OPC?')
             self.scope.inst.write('FILESystem:READFile "C:/Temp.png"')
-            time.sleep(0.2)  # Wait for file to be ready
+            time.sleep(0.5)  # Wait for file to be ready
             raw_data = self.scope.inst.read_raw()
             with open(filepath, 'wb') as f:
                 f.write(raw_data)
